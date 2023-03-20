@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+<style>
+  #card {
+    max-width: 65%;
+    margin: 0 auto;
+    /* Added */
+    float: none;
+    /* Added */
+    margin-bottom: 10px;
+    /* Added */
+    font-size: small;
+  }
+
+  label {
+    padding: 7px;
+  }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<br><br>
+<div class="row" style="padding: 30px;">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-sm-12 order-sm-12">
+        <div class="card" id="card">
+          <div class="card-header">
+            <h3>Local Admin </h3>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              <div class="row">
+
+                <div class="col-sm-6">
+                  <label for="">Name</label>
+                  <input type="text" name="name" id="name" class="form-control" required>
+                </div>
+                <div class="col-sm-6">
+                  <label for="">Email</label>
+                  <input type="email" name="email" id="email" class="form-control" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <label class="form-label" for="">Phone Number</label>
+                  <input type="number" name="phone_number" id="phone_number" class="form-control" required>
+                </div>
+                <div class="col-sm-6">
+                  <label class="form-label" for="">Password</label>
+                  <input type="password" name="password" id="password" class="form-control" required>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <button type="submit" class="btn btn-success" name="save" value="save" onclick=alert()>Save</button>
+
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+{% block script_block %}
+<script type="text/javascript">
+  setTimeout(function () {
+    $("#alert").fadeTo(500, 0).slideUp(500, function () {
+      $(this).remove();
+    });
+  }, 2000);
+</script>
+{% endblock %}

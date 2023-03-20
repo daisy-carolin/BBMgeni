@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #mpesa,#debit,#airtel,#eazzy,#eagent,#pesa,#bank,#kcon,#Others{
+       display: none;
+       padding: 10px;
+   }
+   </style>
+         <script src=
+         "https://code.jquery.com/jquery-1.12.4.min.js">
+             </script>
+</head>
+<body>
+    <div class="alert alert-success" role="alertt">
+        <strong>Seasonal Parking Application was succesfull,pay invoice amount 
+            below or pay later at.
+        </strong> </b>
+      </div>
+    <label>Please choose Your Preferred mode of Payment</label>
+    <!-- <div class="radio">
+      <div class="form-group row">
+        <div class="col-sm-1">
+          <input type="radio" name="action" value="kconnect"/>
+        </div>
+        <div class="col-sm-11">
+              <label >KConnect</label>
+      </div>
+    </div>
+    </div> -->
+    <!-- <div id="kconnect" class="show-hide">
+      <div class="col-md-12 ">
+      <label>Phone Number</label>
+      <input type="text" class="form-control" placeholder="eg: 254700000000">
+    </div>
+    </div> -->
+    <div class="radio">
+      <div class="form-group row">
+        <div class="col-sm-1">
+          <input type="radio" name="action" value="kcon"/>
+        </div>
+        <div class="col-sm-11">
+              <label >kconnect</label>
+      </div>
+    </div>
+    </div>
+    <div id="kcon" class="show-hide">
+
+      <div class="row">
+          <div class="col-md-6 ">
+              <h5>STK Push</h5>
+              <p>Enter Your Preferred  Safaricom  mobile phone number below and we
+                   will invoke payments to the provided number</p>
+                   <label>Enter Mobile Number</label>
+                   <input type="text" class="form-control" ><br>
+                   <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">-> Pay Ksh.13000 </button>
+
+                  </div>
+          <div class="col-md-6 " style="border-left: 2px solid rgb(132, 129, 129);">
+              <h5>Pay using kconnect Paybill</h5>
+              <p>1.Go to kconnect on phone</p>
+              <p>2.Select Pay Bill Option</p>
+              <p>3.Enter Bussiness no. 60xxxx</p>
+              <p>4.Enter Account no. BL-SE-C80XXXXX</p>
+              <P>5.Enter the Amount. KES 13000</P>
+              <p>6.Enter your kconnect PIN and Send</p>
+              <p>7.You will receive a confirmation SMS from kconnect</p><BR>
+                  <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Check Payment </button>
+
+          </div>
+      </div>
+    </div>
+    <div class="radio">
+        <div class="form-group row">
+          <div class="col-sm-1">
+            <input type="radio" name="action" value="mpesa"/>
+          </div>
+          <div class="col-sm-11">
+                <label >Mpesa</label>
+        </div>
+      </div>
+      </div>
+      <div id="mpesa" class="show-hide">
+
+        <div class="row">
+            <div class="col-md-6 ">
+                <h5>STK Push</h5>
+                <p>Enter Your Preferred  Safaricom  mobile phone number below and we
+                     will invoke payments to the provided number</p>
+                     <label>Enter Mobile Number</label>
+                     <input type="text" class="form-control" ><br>
+                     <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">-> Pay Ksh.13000 </button>
+
+                    </div>
+            <div class="col-md-6 " style="border-left: 2px solid rgb(132, 129, 129);">
+                <h5>Pay using MPesa Paybill</h5>
+                <p>1.Go to M-Pesa on phone</p>
+                <p>2.Select Pay Bill Option</p>
+                <p>3.Enter Bussiness no. 60xxxx</p>
+                <p>4.Enter Account no. BL-SE-C80XXXXX</p>
+                <P>5.Enter the Amount. KES 13000</P>
+                <p>6.Enter your M-PESA PIN and Send</p>
+                <p>7.You will receive a confirmation SMS from MPESA</p><BR>
+                    <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Check Payment </button>
+
+            </div>
+        </div>
+      </div>
+
+      <div class="radio">
+        <div class="form-group row">
+          <div class="col-sm-1">
+            <input type="radio" name="action" value="debit"/>
+          </div>
+          <div class="col-sm-11">
+                <label >Debit/Credit/Prepaid Card</label>
+        </div>
+      </div>
+      </div>
+      <div id="debit" class="show-hide">
+        <div class="row">
+            <div class="col-md-6 " >
+                <div class="col-md-12" style="padding-bottom: 10px;">
+                    <input type="number" class="form-control" placeholder="Card Number">
+                </div>
+                <div class="col-md-12" style="padding-bottom: 10px;"> 
+                    <input type="text" class="form-control" placeholder="Card Holder Name">
+                </div>
+                <div class="row" style="padding-bottom: 10px;">
+                <div class="col-md-6">
+                    <input type="month" class="form-control" >
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="CVC" >
+                </div>
+            </div>
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Submit </button>
+                </div>
+            </div>
+            <div class="col-md-6 " style="border-left: 2px solid rgb(132, 129, 129);">
+                <img src="{% static 'assets/img/card.gif' %}" alt="card" style="width: 100%;">
+            </div>
+
+        </div>
+      </div>
+      <div class="radio">
+        <div class="form-group row">
+          <div class="col-sm-1">
+            <input type="radio" name="action" value="airtel"/>
+          </div>
+          <div class="col-sm-11">
+                <label > Airtel Money</label>
+        </div>
+      </div>
+      </div>
+      <div id="airtel" class="show-hide">
+        <ol>
+            <li>Go to Airtel Money on your Phone</li>
+            <li>Select Pay Bill option</li>
+            <li>Select Other</li>
+            <li>Enter Business Name: 60xxxx</li>
+            <li>Enter the Amount ksh.200</li>
+            <li>Enter Your Airtel Money PIN And Send</li>
+            <li>Enter Account No.</li>
+            <li> You will receive a confirmation SMS from Airtel Money</li>
+        </ol>
+        <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Check Payment </button>
+
+      </div>
+
+      <div class="radio">
+        <div class="form-group row">
+          <div class="col-sm-1">
+            <input type="radio" name="action" value="eazzy"/>
+          </div>
+          <div class="col-sm-11">
+                <label > Eazzypay</label>
+        </div>
+      </div>
+      </div>
+      <div id="eazzy" class="show-hide">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Using Equitel</h5>
+                    <ol>
+                        <li>From your Equitel SIM Card, Select My Money</li>
+                        <li>Select EazzyPay</li>
+                        <li>Select Paybill</li>
+                        <li>Select Account</li>
+                        <li>Select Enter Business Number and type 60xxxx</li>
+                        <li>Enter Bill Account Number:</li>
+                        <li>Enter Amount Ksh. 200</li>
+                        <li>Enter your Equitel PIN and send </li>
+                        <li>You will receive a transaction
+                            SMS from Equitel</li>
+                    </ol>
+                    <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Check Payment </button>
+
+                </div>
+                <div class="col-md-6" style="border-left: 2px solid rgb(132, 129, 129);">
+                    <h5>Using Eazzy Banking App</h5>
+                    <ol>
+                        <li>Log in to your EazzyBanking App</li>
+                        <li>Click on the fab icon (+) at the bottom
+                            right of the screen</li>
+                        <li>Select EazzyPay</li>
+                        <li>Select Paybill</li>
+                        <li> Enter Paybill Number 60xxxx</li>
+                        <li>Enter Bill Account Number:</li>
+                        <li>Enter Amount Ksh. 200 </li>
+                        <li>Confirm details and send</li>
+                        <li>You will receive a transaction confirmation SMS on your registered
+                            line</li>
+                    </ol>
+                    <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Check Payment </button>
+
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="radio">
+        
+        <div class="form-group row">
+          <div class="col-sm-1">
+            <input type="radio" name="action" value="eagent"/>
+          </div>
+          <div class="col-sm-11">
+                <label > E-agent</label>
+        </div>
+      </div>
+      </div>
+      <div id="eagent" class="show-hide">
+        <p>To Pay your bill Ksh. 200 via E-Agent. Enter the agents Credentials Below then Click the Submit button below.</p>
+    
+    <label>E-agent's email</label> 
+    <input type="text" class="form-control"><br>
+    <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Submit </button>
+
+    </div>
+
+      <div class="radio">
+        <div class="form-group row">
+          <div class="col-sm-1">
+            <input type="radio" name="action" value="pesa"/>
+          </div>
+          <div class="col-sm-11">
+                <label > Pesalink</label>
+        </div>
+      </div>
+      </div>
+      <div id="pesa" class="show-hide">
+        <div class="col-md-12">
+            <ol>
+                <li>Log in to your Bank App or USSD</li>
+                <li>Select Pesalink</li>
+                <li> Go to "Send to Phone option</li>
+                <li>Type 60xxxx as the phone number.</li>
+                <li>Select Bank</li>
+                <li>Enter the Amount Ksh. KES 200</li>
+                <li> Reason for payment enter</li>
+                <li> Complete the transaction</li>
+                <li>You will receive an SMS confirmation from Pesalink (if your number is linked) and
+                    also from your bank.</li>
+            </ol>
+            <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Check Payment </button>
+
+        </div>
+      </div>
+
+      <div class="radio">
+        <div class="form-group row">
+          <div class="col-sm-1">
+            <input type="radio" name="action" value="bank"/>
+          </div>
+          <div class="col-sm-11">
+                <label > Bank Payment (Cash)</label>
+        </div>
+      </div>
+      </div>
+      <div id="bank" class="show-hide">
+        <div class="col-md-12">
+            <ol>
+                <li>Visit any bank branch</li>
+                <li>Ask to make NRS Cash Payment</li>
+                <li>Bill Reference Number:</li>
+                <li>Amount Ksh. 200</li>
+                <li>Teller process the payment and gives customer transaction receipt
+                    Print these Instructions</li>
+            </ol>
+            <p><b>🖨Print These Instructions</b></p>
+            <button type="button" class="btn btn-success btn-md btn-block" style="width: 100%;">Check Payment </button>
+
+        </div>
+      </div>
+      <div class="radio">
+        <div class="form-group row">
+          <div class="col-sm-1">
+            <input type="radio" name="action" value="Others"/>
+          </div>
+          <div class="col-sm-11">
+                <label > Others</label>
+        </div>
+      </div>
+      </div>
+      <div id="Others" class="show-hide">
+        <div class="col-md-12">
+           <spam>Other Payment</spam>
+
+        </div>
+      </div>
+</div>
+<script>
+    $(document).ready(function(){ 
+    $("input[name=action]").change(function() {
+        var test = $(this).val();
+        $(".show-hide").hide();
+        $("#"+test).show();
+    }); 
+  });
+  </script>
+</body>
+</html>

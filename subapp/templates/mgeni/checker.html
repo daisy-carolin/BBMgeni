@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+<style>
+    #card {
+        width: 65%;
+        margin: 0 auto;
+        /* Added */
+        float: none;
+        /* Added */
+        margin-bottom: 10px;
+        /* Added */
+    }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+
+<!-- Page content -->
+<br><br><br>
+<div class="row" style="padding: 30px;">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="col-md-12"><br>
+                            <h5>Enter Id Number</h5><br>
+                            <input type="text" class="form-control" name="search" placeholder="Enter visitor ID ......">
+                        </div><br>
+
+                        <center> <button type="submit" class="btn btn-primary" name='search_btn' value="search">➥ Check
+                            </button></center>
+
+                    </form>
+                </div>
+                <div class="col-md-4">
+
+                </div>
+            </div>
+        </div>
+
+
+        {% if record %}
+
+        <div class="card" id="card">
+            <div class="card-header">
+                <h4>Entry</h4>
+            </div>
+            <div class="card-body" style="padding:40px;">
+                <form method="post">
+                    {% csrf_token %}
+                    {{form.visitor_id}}
+                    {{form.user_id}}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Name</label>
+                            {{form.name}}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Phone Number</label>
+                            {{form.Phone_number}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Email</label>
+                            {{form.email}}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">gender</label>
+                            {{form.gender}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">IN Time</label>
+                            {{form.in_time}}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">OUT Time</label>
+                            {{form.out_time}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="">Notes</label>
+                            {{form.note}}
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <button type="submit" class="btn btn-danger" style="float: right;" name="save1"
+                            value="save">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+        {% else %}
+
+        <!-- check in records  -->
+
+            <div class="row">
+
+                <div class="col-xl-12 order-xl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Today Check-IN </h4>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">S.no</th>
+                                        <th scope="col">visitor_id</th>
+                                        <th scope="col">name</th>
+                                        <th scope="col">phone</th>
+                                        <th scope="col">email</th>
+                                        <th scope="col">gender</th>
+                                        <th scope="col">in_time</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in check_in %}
+                                    <tr>
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{data.visitor_id}}</td>
+                                            <td>{{data.name}}</td>
+                                            <td>{{data.Phone_number}}</td>
+                                            <td>{{data.email}}</td>
+                                            <td>{{data.gender}}</td>
+                                            <td>{{data.in_time}}</td>
+                                            <td> <a href="{% url 'checker_edit' data.id %}"><button
+                                                        type="button"
+                                                        class="btn btn-danger btn-sm">Check-Out</button></a> </td>
+                                        </form>
+                                    </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+    <br><br><br><br>
+
+    {% endblock %}
+
+
+
+    {% block script_block %}
+
+    {% endblock %}

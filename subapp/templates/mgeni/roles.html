@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+<style>
+    td,th{
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+
+<br><br><br>
+<div class="row" style="padding: 30px;">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Roles and permission</h6>
+          <a href="{% url 'add_roles' %}">
+          <button style="float: right;" type="button" class="btn btn-primary">
+            Add
+          </button></a>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center justify-content-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">S.no</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Role Name</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Action</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for data in records %}
+                <tr>
+                    <td>
+                        <p class="text-sm font-weight-bold mb-0">{{forloop.counter}}</p>
+                      </td>
+                  <td>
+                    <p class="text-sm font-weight-bold mb-0">{{data.role_name}}</p>
+                  </td>
+                  <td >
+                    <div class="dropdown">
+                        <button class="btn " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v text-xs"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li><a class="dropdown-item" href="{% url 'edit_roles' data.id %}">Edit</a></li>
+                          <li><a class="dropdown-item" href="{% url 'delete_roles' data.id %}">Delete</a></li>
+                        </ul>
+                      </div>
+                  </td>
+                </tr>
+                {% endfor %}
+               
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script_block %}
+
+{% endblock  %}

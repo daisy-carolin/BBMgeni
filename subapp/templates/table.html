@@ -1,0 +1,34 @@
+def Table(request):
+    excel_data=[]
+    if request.method=="POST":
+        excel_file = request.FILES["excel_file"]
+        wb = openpyxl.load_workbook(excel_file)
+        worksheet = wb["Accounts Balances"]
+        print(worksheet)
+
+        excel_data = list()
+        for row in worksheet.iter_rows():
+            row_data = list()
+            for cell in row:
+                row_data.append(str(cell.value))
+            excel_data.append(row_data)
+        print(excel_data)
+    return render(request, 'table.html', {"excel_data":excel_data})
+
+
+{% extends 'base.html' %}
+
+{% block head_block %}
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+{% endblock %}
+
+
+
+{% block script_block %}
+
+{% endblock  %}
+     

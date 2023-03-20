@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"> </script>
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+<style>
+    [type="search"] {
+        border: 1 !important;
+        border-color: rgb(220, 235, 249) !important;
+    }
+    table.dataTable.no-footer {
+        border: none !important;
+    }
+    thead, tbody, tfoot, tr, td, th {
+        border-color: inherit;
+        border-style: none;
+        border-width: 0;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<!-- Page content -->
+<br><br><br>
+<div class="row" style="padding: 30px;">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Guest</h4>
+                <div style="float: right;">
+                    <a href=""><button class="btn btn-primary">Add</button></a>
+                </div>
+            </div>
+            <div class="card-body" style="overflow-x: scroll;">
+                <table class="table table-hover" id="tableID">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">S.no</th>
+                            <th scope="col">Visitor id</th>
+                            <th scope="col">name</th>
+                            <th scope="col">phone</th>
+                            <th scope="col">email</th>
+                            <th scope="col">gender</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in records %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.visitor_id}}</td>
+                            <td>{{data.name}}</td>
+                            <td>{{data.Phone_number}}</td>
+                            <td>{{data.email}}</td>
+                            <td>{{data.gender}}</td>
+                            <td style="width: 12%;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <i class="fas fa-arrow-up text-success mr-3"></i> {{data.in_time}}
+                                    </div>
+                                    {% if not data.out_time == None %}
+                                    <div class="col-md-12">
+                                        <i class="fas fa-arrow-down text-warning mr-3"></i> {{data.out_time}}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>{{data.created_at|date}}</td>
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block script_block %}
+<script>
+    $(document).ready(function () {
+
+        $('#tableID').DataTable({
+        });
+
+    });
+
+</script>
+{% endblock %}

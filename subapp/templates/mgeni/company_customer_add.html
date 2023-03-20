@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+<!-- Page content -->
+<br><br><br>
+<div class="row" style="padding: 30px;">
+    <div class="col-8">
+        <div class="card mb-12">
+            <div class="card-header">
+                <h5>Comapany Customer</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="">Customer Name</label>
+                            <input type="text" id='customer_name' name="customer_name" class="form-control" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="">Phone Number</label>
+                            <input type="text" id='phone_number' name="phone_number" class="form-control" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="">Email</label>
+                            <input type="text" id='email' name="email" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Start Date</label>
+                            <input type="date" id='start_date' name="start_date" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Expiry Date</label>
+                            <input type="date" id='phone_number' name="phone_number" class="form-control" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block script_block %}
+
+{% endblock %}

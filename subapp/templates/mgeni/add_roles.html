@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+<br><br><br>
+<div class="row" style="padding: 30px;">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Roles</h5>
+            </div>
+            <div class="card-body">
+
+                <div class="card-body">
+                    <form method="post" id="form">
+                        {% csrf_token %}
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="" class="form-check-label">Role Name</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="role_name" id="id_role_name"
+                                        value="{{form.role_name.value}}">
+                                </div>
+
+                            </div><br>
+                    
+
+                        <div class="card-footer">
+                            <a href="{% url 'roles' %}"><button type="button" class="btn btn-warning">Close</button></a>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}
+
+
+
+    {% block script_block %}
+
+    {% endblock %}

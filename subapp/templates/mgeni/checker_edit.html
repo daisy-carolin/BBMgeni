@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+<style>
+    #card {
+        width: 65%;
+        margin: 0 auto;
+        /* Added */
+        float: none;
+        /* Added */
+        margin-bottom: 10px;
+        /* Added */
+    }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+<br><br><br>
+<div class="row" style="padding: 30px;">
+    <div class="col-12">
+        <div class="card mb-4" id="card">
+            <div class="card-header">
+                <h3>Out time</h3>
+            </div>
+            <div class="card-body" style="padding:40px;">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for field in form %}
+                        {% if forloop.counter < 7%} <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="input-address"> {{ field.label_tag }}</label><br>
+                                {{ field }}
+                            </div>
+                    </div>
+                    {% else %}
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-address"> {{ field.label_tag }}</label><br>
+                            {{ field }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+
+            </div>
+            <div>
+                <button type="submit" class="btn btn-success" style="float: right;" name="edit_btn"
+                    value="edit_btn">Submit</button>
+                <a href="{% url 'checker' %}" style="float: right;" class="btn btn-danger">Cancel</a>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+<br><br><br><br>
+{% endblock %}
+
+
+
+{% block script_block %}
+
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<br><br>
+<!-- Page content -->
+<div class="container-fluid mt--6 align-items-center">
+    <div class="row">
+
+        <div class="col-xl-10 order-xl-1">
+            <div class="card" id='card'>
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Employee Registration</h3>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" id="form">
+                        {% csrf_token %}
+                        <h6 class="heading-small text-muted mb-4">Guest information</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-username">Name</label>
+                                        <input type="text" id="name" name="name" class="form-control"
+                                            placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-email">Email address</label>
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="phone_number">Phone</label>
+                                        <input type="number" name="phone_number" id="phone_number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-last-name">Gender</label>
+                                        <select name="gender" id="gender" class="form-control">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-address">Image</label>
+                                        <input id="image" name="image" class="form-control" type="file">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <!-- Address -->
+                        <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-address">Address</label>
+                                        <input id="address" name="address" class="form-control"
+                                            placeholder="Home Address" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-city">City</label>
+                                        <input type="text" id="city" name="city" class="form-control"
+                                            placeholder="City">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-country">Country</label>
+                                        <input type="text" id="country" name='country' class="form-control"
+                                            placeholder="Country">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-country">Postal code</label>
+                                        <input type="number" id="postal_code" name="postal_code" class="form-control"
+                                            placeholder="Postal code">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <h6 class="heading-small text-muted mb-4">Proof</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-address">Proof Type</label>
+                                    <input id="proof_type" name="proof_type" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-address">Proof</label>
+                                    <input id="proof" name="proof" class="form-control" type="file">
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <!-- Description -->
+                        <h6 class="heading-small text-muted mb-4">Description</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-address">Host</label>
+                                    <input id="host" name="host" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-address">Role</label>
+                                    <input id="role" name="role" class="form-control" type="text">
+                                </div>
+                            </div>
+                        </div>
+                          
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label">Description</label>
+                                    <textarea rows="4" class="form-control" name="description"
+                                        placeholder="A few words about you ..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+                        <!-- User Login -->
+                        <h6 class="heading-small text-muted mb-4">Create Guest Account</h6>
+                        <div class="pl-lg-4">
+
+                            <div class="row">
+                                {% for field in form %}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-address"> {{ field.label_tag }}</label><br>
+                                        {{ field }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <div class="fieldWrapper">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                        <button type="submit" form="form" class="btn btn-sm btn-primary" style="float: right;">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+
+
+    {% block script_block %}
+
+    {% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+<style>
+    td,th{
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+<br><br><br>
+<div class="row" style="padding: 30px;">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Purpose</h6>
+          <button style="float: right;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add
+          </button>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center justify-content-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">S.no</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Purpose</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Action</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for data in records %}
+                <tr>
+                    <td>
+                        <p class="text-sm font-weight-bold mb-0">{{forloop.counter}}</p>
+                      </td>
+                  <td>
+                    <p class="text-sm font-weight-bold mb-0">{{data.name}}</p>
+                  </td>
+                  <td>
+                    <span class="text-xs font-weight-bold">{{data.status}}</span>
+                  </td>
+                  <td >
+                    <button class="btn btn-link text-secondary mb-0">
+                      <i class="fa fa-ellipsis-v text-xs"></i>
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+               
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+         <form action="" method="post" id="form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="">Purpose</label>
+                </div>
+                <div class="col-md-8">
+                    {{form.user_id}}
+                    {{form.name}}
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="">Status</label>
+                </div>
+                <div class="col-md-8">
+                    {{form.status}}
+                </div>
+            </div>
+         </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="form" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+
+{% block script_block %}
+
+{% endblock %}
