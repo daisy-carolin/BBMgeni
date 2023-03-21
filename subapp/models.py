@@ -6,31 +6,47 @@ from django.utils import timezone
 
 class CustomUserManager(BaseUserManager):
 
-    def create_superuser(self, email, username, first_name, last_name, password, **other_fields):
+    def create_superuser(self, email, password, **other_fields):
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
         other_fields.setdefault('is_active', True)
 
-        return self.create_user(email, username, first_name, last_name, password, **other_fields)
+        return self.create_user(email, password, **other_fields)
 
     
-    def create_user(self, email, username, first_name, last_name, password, **other_fields):
+    def create_user(self, email, password, **other_fields):
 
         if not email:
             raise ValueError(_('You must provide a valid email address'))
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username,first_name=first_name, last_name=last_name, **other_fields)
+        user = self.model(email=email,  **other_fields)
         user.set_password(password)
         user.save()
         return user
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=50, unique=True)
+class User(AbstractBaseUser, PermissionsMixin):
+    class Types(models.TextChoices):
+        ORGANISATION_ADMIN= "ORGANISATION_ADMIN" , "ORGANISATION_ADMIN"
+        LOCAL_ADMIN = "LOCAL_ADMIN" , "LOCAL_ADMIN"
+        PORTAL_USER = "PORTAL_USER " , "PORTAL_USER"
+        STAFF_RESIDENT = "  STAFF_RESIDENT" , "STAFF_RESIDENT"
+        SECURITY_PERSONEL = "SECURITY_PERSONEL" , "SECURITY_PERSONEL"
+    
+          
+    type = models.CharField(max_length = 30 , choices = Types.choices , 
+                            # Default is user is staff_resident
+                            default = Types.STAFF_RESIDENT)
+
     email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(max_length=30, blank=False)
-    last_name = models.CharField(max_length=30, blank=False)
+    first_name = models.CharField(max_length=30, null=True, blank=False)
+    last_name = models.CharField(max_length=30, null=True, blank=False)
+    is_organisationadmin= models.BooleanField(default = False)
+    is_localadmin = models.BooleanField(default = False)
+    is_portaluser = models.BooleanField(default = False)
+    is_staffresident= models.BooleanField(default = False)
+    is_securitypersonel = models.BooleanField(default = False)
     created_on = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -38,15 +54,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    REQUIRED_FIELDS = []
 
     def _str_(self) -> str:
-        return self.username
+        return self.email
+
+
 
 
 # Create your models here.
 class Host(models.Model):
-    user_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
+    user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     name=models.CharField(max_length=100,blank=True,null=True)
     status=models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -61,7 +79,7 @@ class HomeScreen(models.Model):
 
 
 class Purpose(models.Model):
-    user_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
+    user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     name=models.CharField(max_length=100,blank=True,null=True)
     status=models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -69,7 +87,7 @@ class Purpose(models.Model):
         return str(self.name)
 
 class Roles(models.Model):
-    # user_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
+    # user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     role_name=models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -86,8 +104,8 @@ class Roles(models.Model):
         return str(self.role_name)
     
 class EmployeeRegistration(models.Model):
-    user_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,related_name='example3')
-    register_user_id=models.ForeignKey(CustomUser,related_name='example4',on_delete=models.CASCADE,null=True)
+    user_id=models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name='example3')
+    register_user_id=models.ForeignKey(User,related_name='example4',on_delete=models.CASCADE,null=True)
     register_id=models.CharField(max_length=100)
     name=models.CharField(max_length=100)
     phone=models.CharField(max_length=100)
@@ -118,7 +136,7 @@ class SecurityRegistration(models.Model):
     vehicle_number=models.CharField(max_length=100, null=True)
 
 class Checker(models.Model):
-    user_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
+    user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     visitor_id= models.CharField(max_length=100)
     name= models.CharField(max_length=100)
     Phone_number= models.CharField(max_length=100)
@@ -140,6 +158,7 @@ class Invitation(models.Model):
     meeting_date=models.DateField()
     meeting_duration_time=models.IntegerField()
     purpose_of_meeting=models.TextField()
+    invite_code=models.CharField(max_length=5, null=True, blank=False)
     
     class StatusChoice(models.TextChoices):
         WAITING = 'Waiting', 'Waiting'
@@ -150,8 +169,8 @@ class Invitation(models.Model):
     
     
 class CompanyCustomer(models.Model):
-    user_id = models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True,related_name='example5')
-    customer_user_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True,related_name='example6')
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE, null=True,related_name='example5')
+    customer_user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True,related_name='example6')
     customer_id = models.CharField(max_length=100)
     customer_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=100)
@@ -277,7 +296,7 @@ class SecurityPersonnel(models.Model):
       
 class Unappoinment_visit(models.Model):
     visitor_id = models.CharField(max_length=100)
-    security_id = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    security_id = models.ForeignKey(User,on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     phone_number=models.CharField(max_length=100,blank=True,null=True)
     email=models.CharField(max_length=100,blank=True,null=True)

@@ -8,6 +8,10 @@ from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .check_user_role import check_role_is_organisational_admin
+from django.contrib.auth.models import User
+import random, string
+from .sms import SendSMS
+from .email import send_email
 
 # Create your views here.
 def unique_id(pre, suf):
@@ -227,6 +231,7 @@ def invitation_add(request):
     print(invitation_id, save_btn)
     if request.method == "POST":
         if save_btn:
+            invite_code = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
             Invitation.objects.create(
                 invitation_id=invitation_id,
                 visitor_id="",
@@ -236,9 +241,20 @@ def invitation_add(request):
                 meeting_time=request.POST.get("meeting_time"),
                 meeting_date=request.POST.get("meeting_date"),
                 meeting_duration_time=request.POST.get("meeting_duration_time"),
-                purpose_of_meeting=request.POST.get("purpose_of_meeting")
+                purpose_of_meeting=request.POST.get("purpose_of_meeting"),
+                invite_code = invite_code
             )
             messages.success(request, "Sucessfully Invitation is saved")
+            SendSMS().send(
+                phone_number=request.POST.get("phone_number"),
+                meeting_date=request.POST.get("meeting_date"),
+                meeting_time=request.POST.get("meeting_time"),
+                invite_code=invite_code, 
+                name=request.POST.get("name")
+                )
+            send_email(request.POST.get("email"))
+
+            
         elif send_btn:
             # we want to intergrate with mail
             Invitation.objects.create(

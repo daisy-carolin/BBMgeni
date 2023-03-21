@@ -114,6 +114,12 @@ USE_L10N = True
 
 USE_TZ = True
 
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=5877
+EMAIL_HOST_USER='ram.bharathbrands@gmail.com'
+EMAIL_HOST_PASSWORD='eccfutcatpsykoho'
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -129,4 +135,4 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 LOGOUT_REDIRECT_URL='loginn'
-AUTH_USER_MODEL = 'subapp.CustomUser'
+AUTH_USER_MODEL = 'subapp.User'
