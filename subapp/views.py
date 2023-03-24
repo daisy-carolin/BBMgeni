@@ -7,11 +7,12 @@ from django.contrib.auth import login, logout, authenticate
 from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
-from .check_user_role import check_role_is_organisational_admin
+from .check_user_role import check_role_is_localadmin_and_staffresident_and_portaluser, check_role_is_organisationadmin_and_localadmin, check_role_is_organisational_admin,check_role_is_portal_user, check_role_is_security, check_role_is_staffresident
 from django.contrib.auth.models import User
 import random, string
 from .sms import SendSMS
 from .email import send_email
+from postmarker.core import PostmarkClient
 
 # Create your views here.
 def unique_id(pre, suf):
@@ -167,13 +168,13 @@ def employee_registration_add(request):
     context = {"employee": "active", "form": form, "roles": roles, "host": host}
     return render(request, "mgeni/registration_add.html", context)
 
-
+# @user_passes_test(check_role_is_security)
 def security_registration(request):
     records = SecurityRegistration.objects.all()
     context = {"security": "active", "records": records}
     return render(request, "mgeni/security_registration.html", context)
 
-
+# @user_passes_test(check_role_is_security)
 def security_registration_add(request):
     suf = SecurityRegistration.objects.all()
     roles = Roles.objects.all()
@@ -209,13 +210,13 @@ def security_registration_add(request):
     context = {"security": "active", "form": forms, "roles": roles, "host": host}
     return render(request, "mgeni/security_registration_add.html", context)
 
-
+# @user_passes_test( check_role_is_localadmin_and_staffresident_and_portaluser)
 def invitation(request):
     records = Invitation.objects.all()
     context = {"security": "active", "records": records}
     return render(request, "mgeni/invitation.html", context)
 
-
+# @user_passes_test( check_role_is_localadmin_and_staffresident_and_portaluser)
 def invitation_add(request):
     save_btn = request.POST.get("save")
     send_btn = request.POST.get("send")
@@ -244,15 +245,27 @@ def invitation_add(request):
                 purpose_of_meeting=request.POST.get("purpose_of_meeting"),
                 invite_code = invite_code
             )
+            name = request.POST.get("name")
+            meeting_date = request.POST.get("meeting_date")
+            meeting_time=request.POST.get("meeting_time"),
+            email=request.POST.get("email"),
+
             messages.success(request, "Sucessfully Invitation is saved")
             SendSMS().send(
                 phone_number=request.POST.get("phone_number"),
                 meeting_date=request.POST.get("meeting_date"),
                 meeting_time=request.POST.get("meeting_time"),
-                invite_code=invite_code, 
+                invite_code=invite_code,
                 name=request.POST.get("name")
                 )
-            send_email(request.POST.get("email"))
+            postmark = PostmarkClient(server_token='92895c56-a7c3-4525-8a99-0bc297b6d354')
+            postmark.emails.send(
+                From= "rmbugua@mgeniapp.com",
+                To= email,
+                Subject= "Meeting Invitation",
+                HtmlBody= f"Hello {name} \n Your invitstion code is {invite_code}, \nMeeting Date: {meeting_date} \nMeeting time: {meeting_time}",
+                MessageStream="message"
+            )   
 
             
         elif send_btn:
@@ -274,59 +287,60 @@ def invitation_add(request):
     context = {"invitation": "active", "invitation_id": invitation_id}
     return render(request, "mgeni/invitation_add.html", context)
 
-
+# @user_passes_test(check_role_is_security)
 def checker(request):
     # today_min = datetime.combine(datetime.date.today(), datetime.time.min)
     # today_max = datetime.combine(datetime.date.today(), datetime.time.max)
     # check_in=Security_Validation.objects.filter(created_at__range=(today_min, today_max),out_time=None) #toaday record
-    check_in = Checker.objects.filter(out_time=None)
-    record = ""
+    # check_in = Checker.objects.filter(out_time=None)
+    check_record = None
     form = CheckerForm()
-    save = request.POST.get("save1")
+    # save = request.POST.get("save1")
     search_btn = request.POST.get("search_btn")
     if search_btn:
         name = request.POST.get("search")
-        check_record = check_in.filter(visitor_id=name).first()
-        emp_records = EmployeeRegistration.objects.filter(register_id=name)
-        security_records = SecurityRegistration.objects.filter(register_id=name)
-        if check_record:
-            return HttpResponseRedirect(f"checker_edit/{check_record.id}")
-        elif emp_records:
-            record = "emp"
-            form = CheckerForm(
-                initial={
-                    "user_id": request.user.id,
-                    "visitor_id": emp_records[0].register_id,
-                    "name": emp_records[0].name,
-                    "Phone_number": emp_records[0].phone,
-                    "email": emp_records[0].email,
-                    "gender": emp_records[0].gender,
-                }
-            )
-        elif security_records:
-            record = "security"
-            form = CheckerForm(
-                initial={
-                    "user_id": request.user.id,
-                    "visitor_id": security_records[0].register_id,
-                    "name": security_records[0].name,
-                    "Phone_number": security_records[0].phone,
-                    "email": security_records[0].email,
-                    "gender": security_records[0].gender,
-                }
-            )
+        check_record = Invitation.objects.filter(invite_code=name).first()
+        # emp_records = EmployeeRegistration.objects.filter(register_id=name)
+        # security_records = SecurityRegistration.objects.filter(register_id=name)
+        # if check_record:
+        #     return HttpResponseRedirect(f"checker_edit/{check_record.id}")
+        # elif emp_records:
+        #     record = "emp"
+        #     form = CheckerForm(
+        #         initial={
+        #             "user_id": request.user.id,
+        #             "visitor_id": emp_records[0].register_id,
+        #             "name": emp_records[0].name,
+        #             "Phone_number": emp_records[0].phone,
+        #             "email": emp_records[0].email,
+        #             "gender": emp_records[0].gender,
+        #         }
+        #     )
+        # elif security_records:
+        #     record = "security"
+        #     form = CheckerForm(
+        #         initial={
+        #             "user_id": request.user.id,
+        #             "visitor_id": security_records[0].register_id,
+        #             "name": security_records[0].name,
+        #             "Phone_number": security_records[0].phone,
+        #             "email": security_records[0].email,
+        #             "gender": security_records[0].gender,
+        #         }
+        #     )
 
-    if save:
-        form = CheckerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("checker")
-        else:
-            print(form.errors)
-    context = {"form": form, "record": record, "check_in": check_in}
+    # if save:
+    #     form = CheckerForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect("checker")
+    #     else:
+    #         print(form.errors)
+    print(check_record)
+    context = {"form": form, "check_in": check_record}
     return render(request, "mgeni/checker.html", context)
 
-
+# @user_passes_test(check_role_is_security)
 def checker_edit(request, pk):
     check_record = Checker.objects.get(id=pk)
     form = CheckerEditForm(instance=check_record)
@@ -360,14 +374,12 @@ def company_customer_add(request):
     context = {"vistior_records": "active", "records": records}
     return render(request, "mgeni/company_customer_add.html", context)
 
-
+# @user_passes_test(check_role_is_organisational_admin)
 def local_admin_log(request):
     records = LocalAdmin.objects.all()
     context = {"local_admin_records": "active", "records": records}
     return render(request, "mgeni/local_admin_log.html", context)
 
-
-# @user_passes_test(check_role_is_organisational_admin)
 def local_admin_add(request):
     suf = LocalAdmin.objects.all()
     roles = Roles.objects.all()
@@ -375,10 +387,10 @@ def local_admin_add(request):
     form = CreateUserForm()
     if request.method == "POST":
         form = CreateUserForm(request.POST)
-        username = request.POST.get("username")
+        name = request.POST.get("name")
         # if form.is_valid():
         #     form.save()
-        user_name = User.objects.filter(username=username).first()
+        # name = User.objects.filter(name=name).first()
         a = LocalAdmin(
             name=request.POST.get("name"),
             phone_number=request.POST.get("phone_number"),
@@ -408,7 +420,7 @@ def branches(request):
     context = {"branches_records": "active", "records": records}
     return render(request, "mgeni/branches_log.html", context)
 
-
+# @user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def portaluser(request):
     records = PortalUser.objects.all()
     context = {"portal_user_records": "active", "records": records}
@@ -441,7 +453,7 @@ def portal_user_add(request):
     return render(request, "mgeni/portal_user_add.html", context)
 
 
-
+# @user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def staff_residential(request):
     records = StaffResident.objects.all()
     context = {"staff_residential_records": "active", "records": records}
@@ -472,12 +484,14 @@ def staff_residential_add(request):
     context = {"staffresident": "active", "form": form, "roles": roles, "host": host}
     return render(request, "mgeni/staff_residential_add.html", context)
 
+
+
 def organisation_admin_log(request):
     records = OrganisationalAdmin.objects.all()
-    context = {"organisation_admin_records": "active", "records": records}
+    context = {"organisation_admin_log_records": "active", "records": records}
     return render(request, "mgeni/organisation_admin_log.html", context)
 
-
+# @user_passes_test(check_role_is_organisational_admin)
 def organisation_admin_add(request):
     suf = OrganisationalAdmin.objects.all()
     roles = Roles.objects.all()
@@ -485,10 +499,10 @@ def organisation_admin_add(request):
     form = CreateUserForm()
     if request.method == "POST":
         form = CreateUserForm(request.POST)
-        username = request.POST.get("username")
+        name = request.POST.get("username")
         # if form.is_valid():
         #     form.save()
-        user_name = User.objects.filter(username=username).first()
+        # name = User.objects.filter(name=name).first()
         a = OrganisationalAdmin(
             name=request.POST.get("name"),
             role=request.POST.get("role"),

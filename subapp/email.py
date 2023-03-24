@@ -1,13 +1,15 @@
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from postmarker.core import PostmarkClient
 
-def send_email(to):
-    subject = 'MGENI Invitation Code'
-    from_email = settings.EMAIL_HOST_USER
-    to = str(to)
-    text_content = 'This is an important message.'
-    html_content = '<p>This is an <strong>important</strong> message.</p>'
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, "text/html")
-    msg.send()
+postmark = PostmarkClient(server_token='92895c56-a7c3-4525-8a99-0bc297b6d354')
 
+def send_email():
+    postmark.emails.send(
+        From= "rmbugua@mgeniapp.com",
+        To= "allan@bharathbrands.in",
+        Subject= "Hello from Postmark",
+        HtmlBody= "<strong>Hello</strong> dear Postmark user.",
+        MessageStream="message"
+    )
+    
