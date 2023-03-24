@@ -205,7 +205,7 @@ class Organisation(models.Model):
     organisation_code=models.CharField(max_length=100)
 
     def __str__(self) -> str:
-        return self.organisation_category
+        return self.organisation_name
 
 class OrganisationalAdmin(models.Model):
     name=models.CharField(max_length=100,null=True)
