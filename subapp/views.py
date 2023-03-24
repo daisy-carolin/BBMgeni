@@ -416,6 +416,35 @@ def organisation(request):
     context = {"organisation_records": "active", "records": records}
     return render(request, "mgeni/organisation.html", context)
 
+def organisation_add(request):
+    suf = PortalUser.objects.all()
+    roles = Roles.objects.all()
+    host = Host.objects.all()
+    form = CreateUserForm()
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            a = Organisation(
+                organisation_name=request.POST.get("username"),
+                role=request.POST.get("role"),
+                phone_number = request.POST.get("phone_number"),
+                starting_date = request.POST.get("starting_date"),
+                organisation_category=request.POST.get("organisation_category"),
+                organisational_address=request.POST.get("organisational_address"),
+                postal_code=request.POST.get("postal_code"),
+                postal_address=request.POST.get("postal_address"),
+                location_address=request.POST.get("location_address"),
+                organisation_code=request.POST.get("organisation_code"),
+
+
+                status="Active",
+            )
+            a.save()
+            return redirect("organisation_registration")
+    context = {"organisation": "active", "form": form, "roles": roles, "host": host}
+    return render(request, "mgeni/organisation_add.html", context)
+
 
 def branches(request):
     records = Branches.objects.all()
