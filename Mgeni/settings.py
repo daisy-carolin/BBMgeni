@@ -100,6 +100,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'subapp.backends.OrganisationalAdminBackend',
+    'subapp.backends.LocalAdminBackend',
+    # 'subapp.backends.SecurityPersonnelBackend',
+    # 'subapp.backends.PortalUserBackend',
+    # 'subapp.backends.StaffResidentBackend',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

@@ -8,11 +8,14 @@ from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .check_user_role import check_role_is_localadmin_and_staffresident_and_portaluser, check_role_is_organisationadmin_and_localadmin, check_role_is_organisational_admin,check_role_is_portal_user, check_role_is_security, check_role_is_staffresident
-from django.contrib.auth.models import User
 import random, string
 from .sms import SendSMS
 from .email import send_email
 from postmarker.core import PostmarkClient
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+
+User = get_user_model()
 
 # Create your views here.
 def unique_id(pre, suf):
@@ -25,6 +28,7 @@ def unique_id(pre, suf):
         id = pre + str(tot_rec_count)
     return id
 
+@login_required(login_url='/login',)
 def home(request):
     return render(request, "dashboard.html")
 
@@ -49,6 +53,7 @@ def home(request):
 def login_user(request):
     username=request.POST.get('username')
     password=request.POST.get('password')
+
     user=authenticate(request,username=username,password=password)
     if user is not None:
         login(request,user)
@@ -184,11 +189,8 @@ def security_registration_add(request):
         username = request.POST.get("username")
         # if form.is_valid():
         #     form.save()
-        user_name = User.objects.filter(username=username).first()
+        user_name = User.objects.filter(email=username).first()
         a = SecurityRegistration(
-            user_id_id=request.user.id,
-            register_user_id=user_name.id,
-            register_id=unique_id("RID", suf),
             name=request.POST.get("name"),
             phone=request.POST.get("phone_number"),
             email=request.POST.get("email"),
@@ -441,6 +443,8 @@ def portal_user_add(request):
             a = StaffResident(
                 name=request.POST.get("username"),
                 department=request.POST.get("department"),
+                email = request.POST.get("email"),
+                password = request.POST.get("password"),
                 roles=request.POST.get("roles"),
                 idNo=request.POST.get("idNo"),
                 phone=request.POST.get("phone_number"),
@@ -474,6 +478,8 @@ def staff_residential_add(request):
             a = StaffResident(
                 name=request.POST.get("username"),
                 phone=request.POST.get("phone_number"),
+                email = request.POST.get("email"),
+                password = request.POST.get("password"),
                 department=request.POST.get("department"),
                 staffNo=request.POST.get("staffNo"),
                 role_id=request.POST.get("role"),
@@ -503,8 +509,11 @@ def organisation_admin_add(request):
         # if form.is_valid():
         #     form.save()
         # name = User.objects.filter(name=name).first()
+        
         a = OrganisationalAdmin(
             name=request.POST.get("name"),
+            email = request.POST.get("email"),
+            password = request.POST.get("password"),
             role=request.POST.get("role"),
             phone_number=request.POST.get("phone_number"),
             category=request.POST.get("category"),

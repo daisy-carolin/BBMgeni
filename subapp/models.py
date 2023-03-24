@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User, BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+from django.contrib.auth.hashers import make_password
 
 
 class CustomUserManager(BaseUserManager):
@@ -206,7 +209,8 @@ class Organisation(models.Model):
 
 class OrganisationalAdmin(models.Model):
     name=models.CharField(max_length=100,null=True)
-    role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
+    email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
+    role = models.CharField(max_length=25,  default="Organisation Admin", null=True)
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE, null=True)
     phone_number=models.CharField(max_length=100,blank=True,null=True)
     category=models.CharField(max_length=100)
@@ -215,10 +219,16 @@ class OrganisationalAdmin(models.Model):
     maximum_branch=models.CharField(max_length=100)
     organisational_address=models.CharField(max_length=100)
     postal_code=models.CharField(max_length=100)
+    password = models.CharField(max_length=250, null=True, blank=False)
+
+    
+
+    def save(self, *args, **kwargs):
+        self.password = make_password(self.password)
+        super(OrganisationalAdmin, self).save(*args,**kwargs)
     
     def __str__(self) -> str:
         return self.organisational_address
-
 
 # class department(models.Model):
 #     organisation_admin=models.ForeignKey(OrganisationalAdmin,on_delete=models.CASCADE, null=True)
@@ -242,18 +252,23 @@ class Branches(models.Model):
 
 class LocalAdmin(models.Model): 
     name = models.CharField(max_length=100, null=True)
+    email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
     role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     branch = models.ForeignKey(Branches,on_delete=models.CASCADE, null=True)
     email=models.CharField(max_length=100,blank=True,null=True)
     phone_number = models.CharField(max_length=100)
     password = models.CharField(max_length=255, null=True)
 
+    def save(self, *args, **kwargs):
+        self.password = make_password(self.password)
+        super(LocalAdmin, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
         return self.customer_name
 
 class PortalUser(models.Model):
     name = models.CharField(max_length=100)
+    email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
     role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     localAdmin = models.ForeignKey(LocalAdmin,on_delete=models.CASCADE, null=True)
     department= models.CharField(max_length=100)
@@ -261,12 +276,18 @@ class PortalUser(models.Model):
     id_number = models.CharField(max_length=100)
     staff_number = models.CharField(max_length=100)
     status=models.CharField(max_length=100)
+    password = models.CharField(max_length=250, null=True, blank=False)
+
+    def save(self, *args, **kwargs):
+        self.password = make_password(self.password)
+        super(PortalUser, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
         return self.staff_number
     
 class StaffResident(models.Model):
     name = models.CharField(max_length=100)
+    email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
     role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     localAdmin = models.ForeignKey(LocalAdmin,on_delete=models.CASCADE, null=True)
     department= models.CharField(max_length=100)
@@ -274,21 +295,31 @@ class StaffResident(models.Model):
     id_number = models.CharField(max_length=100)
     staff_number = models.CharField(max_length=100)
     status=models.CharField(max_length=100)
+    password = models.CharField(max_length=250, null=True, blank=False)
+
+    def save(self, *args, **kwargs):
+        self.password = make_password(self.password)
+        super(StaffResident, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
         return self.department
     
 class SecurityPersonnel(models.Model):
     name = models.CharField(max_length=100)
+    email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
     role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     localAdmin = models.ForeignKey(LocalAdmin,on_delete=models.CASCADE, null=True)
     phone_number = models.CharField(max_length=100)
-    email=models.CharField(max_length=100,blank=True,null=True)
     purpose=models.CharField(max_length=100)
     invite_date=models.DateField()
     invite_time=models.TimeField()
     vehicle_number = models.CharField(max_length=100, null=True)
     id_number = models.CharField(max_length=100, null=True)
+    password = models.CharField(max_length=250, null=True, blank=False)
+
+    def save(self, *args, **kwargs):
+        self.password = make_password(self.password)
+        super(SecurityPersonnel, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
         return self.purpose
