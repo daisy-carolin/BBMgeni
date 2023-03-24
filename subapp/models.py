@@ -264,7 +264,7 @@ class LocalAdmin(models.Model):
         super(LocalAdmin, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
-        return self.customer_name
+        return self.name
 
 class PortalUser(models.Model):
     name = models.CharField(max_length=100)
