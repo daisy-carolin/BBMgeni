@@ -28,7 +28,7 @@ def unique_id(pre, suf):
         id = pre + str(tot_rec_count)
     return id
 
-@login_required(login_url='/login',)
+# @login_required(login_url='/login',)
 def home(request):
     return render(request, "dashboard.html")
 
