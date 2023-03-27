@@ -6,7 +6,7 @@ from .models import *
 # admin.site.register(department)
 class CustomUserAdmin(UserAdmin):
     search_fields = ('email', )
-    ordering = ('-created_on', )
+    ordering = ('-email', )
     list_filter = ('email', 'is_active', 'is_staff', )
     list_display = ('email', 'is_active', 'is_staff', )
 
