@@ -135,9 +135,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'subapp.backends.OrganisationalAdminBackend',
     'subapp.backends.LocalAdminBackend',
-    # 'subapp.backends.SecurityPersonnelBackend',
-    # 'subapp.backends.PortalUserBackend',
-    # 'subapp.backends.StaffResidentBackend',
+    'subapp.backends.SecurityPersonnelBackend',
+    'subapp.backends.PortalUserBackend',
+    'subapp.backends.StaffResidentBackend',
 ]
 
 
