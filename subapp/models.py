@@ -123,7 +123,7 @@ class EmployeeRegistration(models.Model):
     id_proof_image=models.FileField(upload_to='images/',blank=True, null=True)
     description=models.TextField(blank=True, null=True)
     #department = models.ForeignKey(department,on_delete=models.CASCADE,blank=True, null=True)
-    role = models.ForeignKey(Roles,on_delete=models.CASCADE,blank=True, null=True)
+    # role = models.ForeignKey(Roles,on_delete=models.CASCADE,blank=True, null=True)
     host = models.ForeignKey(Host,on_delete=models.CASCADE,blank=True, null=True)
     status=models.CharField(max_length=100,blank=True, null=True)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -193,7 +193,6 @@ class OrganisationCategory(models.Model):
 
 class Organisation(models.Model):
     organisation_name=models.CharField(max_length=100)
-    role = models.ForeignKey(Roles,on_delete=models.CASCADE,blank=True, null=True)
     phone_number=models.CharField(max_length=100,blank=True,null=True)
     starting_date=models.DateField()
     expiry_date=models.DateField()
@@ -208,9 +207,9 @@ class Organisation(models.Model):
         return self.organisation_name
 
 class OrganisationalAdmin(models.Model):
-    name=models.CharField(max_length=100,null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=100, null=True)
     email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
-    role = models.CharField(max_length=25,  default="Organisation Admin", null=True)
     organisation = models.ForeignKey(Organisation,on_delete=models.CASCADE, null=True)
     phone_number=models.CharField(max_length=100,blank=True,null=True)
     category=models.CharField(max_length=100)
@@ -219,14 +218,7 @@ class OrganisationalAdmin(models.Model):
     maximum_branch=models.CharField(max_length=100)
     organisational_address=models.CharField(max_length=100)
     postal_code=models.CharField(max_length=100)
-    password = models.CharField(max_length=250, null=True, blank=False)
 
-    
-
-    def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
-        super(OrganisationalAdmin, self).save(*args,**kwargs)
-    
     def __str__(self) -> str:
         return self.organisational_address
 
@@ -251,42 +243,33 @@ class Branches(models.Model):
 
 
 class LocalAdmin(models.Model): 
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=100, null=True)
     email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
-    role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     branch = models.ForeignKey(Branches,on_delete=models.CASCADE, null=True)
     email=models.CharField(max_length=100,blank=True,null=True)
     phone_number = models.CharField(max_length=100)
-    password = models.CharField(max_length=255, null=True)
-
-    def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
-        super(LocalAdmin, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
         return self.name
 
 class PortalUser(models.Model):
-    name = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=100, null=True)
     email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
-    role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     localAdmin = models.ForeignKey(LocalAdmin,on_delete=models.CASCADE, null=True)
     department= models.CharField(max_length=100)
     phone_number = models.CharField(max_length=100)
     id_number = models.CharField(max_length=100)
     staff_number = models.CharField(max_length=100)
     status=models.CharField(max_length=100)
-    password = models.CharField(max_length=250, null=True, blank=False)
-
-    def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
-        super(PortalUser, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
         return self.staff_number
     
 class StaffResident(models.Model):
-    name = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=100, null=True)
     email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
     role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     localAdmin = models.ForeignKey(LocalAdmin,on_delete=models.CASCADE, null=True)
@@ -295,19 +278,14 @@ class StaffResident(models.Model):
     id_number = models.CharField(max_length=100)
     staff_number = models.CharField(max_length=100)
     status=models.CharField(max_length=100)
-    password = models.CharField(max_length=250, null=True, blank=False)
-
-    def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
-        super(StaffResident, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
         return self.department
     
 class SecurityPersonnel(models.Model):
-    name = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=100, null=True)
     email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
-    role = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     localAdmin = models.ForeignKey(LocalAdmin,on_delete=models.CASCADE, null=True)
     phone_number = models.CharField(max_length=100)
     purpose=models.CharField(max_length=100)
@@ -315,11 +293,6 @@ class SecurityPersonnel(models.Model):
     invite_time=models.TimeField()
     vehicle_number = models.CharField(max_length=100, null=True)
     id_number = models.CharField(max_length=100, null=True)
-    password = models.CharField(max_length=250, null=True, blank=False)
-
-    def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
-        super(SecurityPersonnel, self).save(*args,**kwargs)
 
     def __str__(self) -> str:
         return self.purpose
