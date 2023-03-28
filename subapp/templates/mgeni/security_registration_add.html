@@ -16,7 +16,7 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <h3 class="mb-0">Security Registration</h3>
+                            <h3 class="mb-0">Security Personnel Registration</h3>
                         </div>
 
                     </div>
@@ -24,7 +24,6 @@
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data" id="form">
                         {% csrf_token %}
-                        <h6 class="heading-small text-muted mb-4">Guest information</h6>
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -34,11 +33,12 @@
                                             placeholder="Name">
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-email">Email address</label>
-                                        <input type="email" id="email" name="email" class="form-control"
-                                            placeholder="Email Address" placeholder="Email Address">
+                                <div class="col-md-6">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="department">Department</label>
+                                            <input type="name" name="department" id="department" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -46,95 +46,63 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-control-label" for="phone_number">Phone</label>
-                                        <input type="number" name="phone_number" id="phone_number" class="form-control"
-                                            placeholder="Phone Number">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="purpose">Purpose</label>
-                                        <input type="purpose" name="purpose" id="purpose" class="form-control"
-                                            placeholder="Purpose">
+                                        <input type="number" name="phone_number" id="phone_number" class="form-control">
                                     </div>
                                 </div>
 
-                            </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="id_number">ID No</label>
+                                            <input type="number" name="id_number" id="id_number" class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                                 </div>
 
+                            
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="phone_number">Phone</label>
-                                        <input type="number" name="phone_number" id="phone_number" class="form-control"
-                                            placeholder="Phone Number">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="purpose">Purpose</label>
-                                        <input type="purpose" name="purpose" id="purpose" class="form-control"
-                                            placeholder="Purpose">
+                                        <label class="form-control-label" for="staff_number">Staff No</label>
+                                        <input type="number" name="staff_number" id="staff_number" class="form-control">
                                     </div>
                                 </div>
 
-                            </div>
+                            <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="roles">Roles</label>
+                                        <input type="text" name="roles" id="roles" class="form-control">
+                                    </div>
+                                </div>
+                                 </div>
+                        <!-- Address -->
 
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="Invite_date">Invite Date</label>
-                                        <input type="date" name="invite_time" id="invite_time" class="form-control"
-                                            placeholder="Invite Date">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="invite_time">Invite Time</label>
-                                        <input type="time" name="invite_time" id="invite_time" class="form-control"
-                                            placeholder="Invite Time">
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="email">Email</label>
-                                        <input type="text" name="email" id="email" class="form-control">
-                                    </div>
-                                </div>
-
-                                
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="password">Password</label>
-                                        <input type="text" name="password" id="password" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-id_number">Id No(Optional)</label>
-                                        <input type="id_number" id="id_number" id_number="id_number"
-                                            class="form-control" placeholder="ID Number">
-                                    </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="email">Email</label>
+                                    <input type="text" name="email" id="email" class="form-control">
                                 </div>
                             </div>
 
-                        </div>
-
+                        <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="password">Password</label>
+                                    <input type="text" name="password" id="password" class="form-control">
+                                </div>
+                            </div>
+                             </div>
 
                         <div class="card-footer">
-                            <button type="submit" form="form" class="btn btn-sm btn-primary"
-                                style="float: right;">Save</button>
-                        </div>
-                    </form>
+                        <button type="submit" form="form" class="btn btn-sm btn-primary" style="float: right;">Save</button>
                 </div>
-            </div>
-        </div>
+                         </div>
+                        
 
-        {% endblock %}
+    {% endblock %}
 
 
 
-        {% block script_block %}
+    {% block script_block %}
 
-        {% endblock %}
+    {% endblock %}

@@ -8,55 +8,34 @@ from django.contrib.auth.hashers import make_password
 
 
 class CustomUserManager(BaseUserManager):
-
     def create_superuser(self, email, password, **other_fields):
-        other_fields.setdefault('is_staff', True)
-        other_fields.setdefault('is_superuser', True)
-        other_fields.setdefault('is_active', True)
+        other_fields.setdefault("is_staff", True)
+        other_fields.setdefault("is_superuser", True)
+        other_fields.setdefault("is_active", True)
 
         return self.create_user(email, password, **other_fields)
 
-    
     def create_user(self, email, password, **other_fields):
 
         if not email:
-            raise ValueError(_('You must provide a valid email address'))
+            raise ValueError(_("You must provide a valid email address"))
 
         email = self.normalize_email(email)
-        user = self.model(email=email,  **other_fields)
+        user = self.model(email=email, **other_fields)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    class Types(models.TextChoices):
-        ORGANISATION_ADMIN= "ORGANISATION_ADMIN" , "ORGANISATION_ADMIN"
-        LOCAL_ADMIN = "LOCAL_ADMIN" , "LOCAL_ADMIN"
-        PORTAL_USER = "PORTAL_USER " , "PORTAL_USER"
-        STAFF_RESIDENT = "  STAFF_RESIDENT" , "STAFF_RESIDENT"
-        SECURITY_PERSONEL = "SECURITY_PERSONEL" , "SECURITY_PERSONEL"
-    
-          
-    type = models.CharField(max_length = 30 , choices = Types.choices , 
-                            # Default is user is staff_resident
-                            default = Types.STAFF_RESIDENT)
-
-    email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(max_length=30, null=True, blank=False)
-    last_name = models.CharField(max_length=30, null=True, blank=False)
-    is_organisationadmin= models.BooleanField(default = False)
-    is_localadmin = models.BooleanField(default = False)
-    is_portaluser = models.BooleanField(default = False)
-    is_staffresident= models.BooleanField(default = False)
-    is_securitypersonel = models.BooleanField(default = False)
-    created_on = models.DateTimeField(default=timezone.now)
+    email = models.EmailField(_("email address"), unique=True)
+    role = models.ForeignKey("Roles", on_delete=models.CASCADE, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     def _str_(self) -> str:
@@ -287,12 +266,12 @@ class SecurityPersonnel(models.Model):
     name = models.CharField(max_length=100, null=True)
     email = models.EmailField(null=True, blank=False, unique=True, db_index=True)
     localAdmin = models.ForeignKey(LocalAdmin,on_delete=models.CASCADE, null=True)
-    phone_number = models.CharField(max_length=100)
-    purpose=models.CharField(max_length=100)
-    invite_date=models.DateField()
-    invite_time=models.TimeField()
-    vehicle_number = models.CharField(max_length=100, null=True)
-    id_number = models.CharField(max_length=100, null=True)
+    department= models.CharField(max_length=100, null=True)
+    phone_number = models.CharField(max_length=100, null=True)
+    id_number = models.CharField(max_length=100,  null=True)
+    staff_number = models.CharField(max_length=100, null=True)
+    status=models.CharField(max_length=100, null=True)
+
 
     def __str__(self) -> str:
         return self.purpose

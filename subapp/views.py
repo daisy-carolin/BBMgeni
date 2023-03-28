@@ -28,7 +28,8 @@ def unique_id(pre, suf):
         id = pre + str(tot_rec_count)
     return id
 
-# @login_required(login_url='/login',)
+@login_required(login_url='/login',)
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def home(request):
     return render(request, "dashboard.html")
 
@@ -63,7 +64,7 @@ def login_user(request):
     return render(request, "mgeni/login_user.html")
 
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def host(request):
     records = Host.objects.all()
     form = HostForm(initial={"user_id": request.user.id})
@@ -77,7 +78,7 @@ def host(request):
     context = {"form": form, "records": records, "host": "active"}
     return render(request, "mgeni/host.html", context)
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def purpose(request):
     records = Purpose.objects.all()
     form = PurposeForm(initial={"user_id": request.user.id})
@@ -91,14 +92,14 @@ def purpose(request):
     context = {"form": form, "records": records, "purpose": "active"}
     return render(request, "mgeni/purpose.html", context)
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def roles(request):
     records = Roles.objects.all()
 
     context = {"records": records, "roles": "active"}
     return render(request, "mgeni/roles.html", context)
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def add_roles(request):
     form = RolesForm(initial={"user_id": request.user.id})
     if request.method == "POST":
@@ -111,7 +112,7 @@ def add_roles(request):
     context = {"form": form, "roles": "active"}
     return render(request, "mgeni/add_roles.html", context)
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def edit_roles(request, pk):
     record = Roles.objects.get(id=pk)
     form = RolesForm(instance=record)
@@ -125,18 +126,18 @@ def edit_roles(request, pk):
     context = {"form": form, "roles": "active"}
     return render(request, "mgeni/add_roles.html", context)
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def delete_roles(request, pk):
     Roles.objects.get(id=pk).delete()
     return redirect("roles")
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def employee_registration(request):
     records = EmployeeRegistration.objects.all()
     context = {"employee": "active", "records": records}
     return render(request, "mgeni/registration.html", context)
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def employee_registration_add(request):
     suf = EmployeeRegistration.objects.all()
     roles = Roles.objects.all()
@@ -173,41 +174,36 @@ def employee_registration_add(request):
     context = {"employee": "active", "form": form, "roles": roles, "host": host}
     return render(request, "mgeni/registration_add.html", context)
 
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def security_registration(request):
     records = SecurityRegistration.objects.all()
     context = {"security": "active", "records": records}
     return render(request, "mgeni/security_registration.html", context)
 
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def security_registration_add(request):
     suf = SecurityRegistration.objects.all()
     roles = Roles.objects.all()
     host = Host.objects.all()
+    form = CreateUserForm(request.POST)
     if request.method == "POST":
-        form = CreateUserForm(request.POST)
         name = request.POST.get("username")
 
         user = User.objects.create(
             email=request.POST.get("email"),
             password=make_password(request.POST.get("password")),
-            role=request.POST.get("role"),
-        )
+            role=roles.get(role_name ="SecurityPersonnel"),       )
+        
         user_name = User.objects.filter(email=name).first()
-        a = SecurityRegistration(
-            name=request.POST.get("name"),
-            phone=request.POST.get("phone_number"),
-            email=request.POST.get("email"),
-            gender=request.POST.get("gender"),
-            image=request.FILES.get("image"),
-            address=request.POST.get("address"),
-            city=request.POST.get("city"),
-            country=request.POST.get("country"),
-            postal_code=request.POST.get("postal_code"),
-            id_proof_type=request.POST.get("proof_type"),
-            id_proof_image=request.FILES.get("proof"),
-            description=request.POST.get("description"),
-            role_id=request.POST.get("role"),
-            host_id=request.POST.get("host"),
-            status="Active",
+        a = SecurityPersonnel(
+            user=user,
+                name=request.POST.get("name"),
+                phone_number=request.POST.get("phone_number"),
+                email = request.POST.get("email"),
+                department=request.POST.get("department"),
+                staff_number=request.POST.get("staff_number"),
+                # role_id=request.POST.get("role"),
+                status="Active"
         )
         return redirect("security_registration_add")
     context = {
@@ -293,6 +289,7 @@ def invitation_add(request):
     context = {"invitation": "active", "invitation_id": invitation_id}
     return render(request, "mgeni/invitation_add.html", context)
 
+@user_passes_test(check_role_is_security)
 def checker(request):
     # today_min = datetime.combine(datetime.date.today(), datetime.time.min)
     # today_max = datetime.combine(datetime.date.today(), datetime.time.max)
@@ -345,6 +342,7 @@ def checker(request):
     context = {"form": form, "check_in": check_record}
     return render(request, "mgeni/checker.html", context)
 
+@user_passes_test(check_role_is_security)
 def checker_edit(request, pk):
     check_record = Checker.objects.get(id=pk)
     form = CheckerEditForm(instance=check_record)
@@ -378,11 +376,13 @@ def company_customer_add(request):
     context = {"vistior_records": "active", "records": records}
     return render(request, "mgeni/company_customer_add.html", context)
 
+@user_passes_test(check_role_is_organisational_admin)
 def local_admin_log(request):
     records = LocalAdmin.objects.all()
     context = {"local_admin_records": "active", "records": records}
     return render(request, "mgeni/local_admin_log.html", context)
 
+@user_passes_test(check_role_is_organisational_admin)
 def local_admin_add(request):
     suf = LocalAdmin.objects.all()
     roles = Roles.objects.all()
@@ -395,15 +395,15 @@ def local_admin_add(request):
         user = User.objects.create(
             email=request.POST.get("email"),
             password=make_password(request.POST.get("password")),
-            role=request.POST.get("role"),
-        )
+            role=roles.get(role_name ="LocalAdmin"),
+      )
 
       
         LocalAdmin.objects.create(
             user=user,
             name=request.POST.get("name"),
             phone_number=request.POST.get("phone_number"),
-            organisational_email=request.POST.get("organisational_email"),
+            email=request.POST.get("email"),
         )
            
         return redirect("local_admin_add")
@@ -429,7 +429,7 @@ def organisation(request):
     return render(request, "mgeni/organisation.html", context)
 
 def organisation_add(request):
-    suf = PortalUser.objects.all()
+    suf =Organisation.objects.all()
     roles = Roles.objects.all()
     host = Host.objects.all()
     form = CreateUserForm()
@@ -463,12 +463,13 @@ def branches(request):
     context = {"branches_records": "active", "records": records}
     return render(request, "mgeni/branches_log.html", context)
 
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def portaluser(request):
     records = PortalUser.objects.all()
     context = {"portal_user_records": "active", "records": records}
     return render(request, "mgeni/portal_user.html", context)
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def portal_user_add(request):
     suf = PortalUser.objects.all()
     roles = Roles.objects.all()
@@ -481,7 +482,8 @@ def portal_user_add(request):
         user = User.objects.create(
             email=request.POST.get("email"),
             password=make_password(request.POST.get("password")),
-            role=request.POST.get("role"),
+            role=roles.get(role_name ="PortalUser"),
+
         )
        
         PortalUser.objects.create(
@@ -489,11 +491,9 @@ def portal_user_add(request):
                 name=request.POST.get("name"),
                 department=request.POST.get("department"),
                 email = request.POST.get("email"),
-                password = request.POST.get("password"),
-                roles=request.POST.get("roles"),
-                idNo=request.POST.get("idNo"),
-                phone=request.POST.get("phone_number"),
-                staffNo=request.POST.get("staffNo"),
+                id_number=request.POST.get("id_number"),
+                phone_number=request.POST.get("phone_number"),
+                staff_number=request.POST.get("staff_number"),
                 status="Active",
             )
         return redirect("portal_user_add")
@@ -503,16 +503,16 @@ def portal_user_add(request):
         "roles": roles,
         "host": host,
     }
-    return render(request, "mgeni/portal_user_add_add_add.html", context)
+    return render(request, "mgeni/portal_user_add.html", context)
 
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def staff_residential(request):
     records = StaffResident.objects.all()
     context = {"staff_residential_records": "active", "records": records}
     return render(request, "mgeni/staff_residential.html", context)
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def staff_residential_add(request):
     suf = StaffResident.objects.all()
     roles = Roles.objects.all()
@@ -525,17 +525,18 @@ def staff_residential_add(request):
         user = User.objects.create(
             email=request.POST.get("email"),
             password=make_password(request.POST.get("password")),
-            role=request.POST.get("role"),
+            role=roles.get(role_name ="Staff/Resident"),
+
+
         )
 
         StaffResident.objects.create(
                 user=user,
                 name=request.POST.get("name"),
-                phone=request.POST.get("phone_number"),
+                phone_number=request.POST.get("phone_number"),
                 email = request.POST.get("email"),
-                password = request.POST.get("password"),
                 department=request.POST.get("department"),
-                staffNo=request.POST.get("staffNo"),
+                staff_number=request.POST.get("staff_number"),
                 role_id=request.POST.get("role"),
                 status="Active",
             )
@@ -547,13 +548,14 @@ def staff_residential_add(request):
         "roles": roles,
         "host": host,
     }
-    return render(request, "mgeni/staff_residential_add_add.html", context)
+    return render(request, "mgeni/staff_residential_add.html", context)
 
 
 
 
 def organisation_admin_log(request):
     records = OrganisationalAdmin.objects.all()
+    print(records)
     context = {"organisation_admin_log_records": "active", "records": records}
     return render(request, "mgeni/organisation_admin_log.html", context)
 
@@ -569,7 +571,7 @@ def organisation_admin_add(request):
         user = User.objects.create(
             email=request.POST.get("email"),
             password=make_password(request.POST.get("password")),
-            role=request.POST.get("role"),
+            role=roles.get(role_name ="OrganisationAdmin"),
         )
 
         

@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data" id="form">
                         {% csrf_token %}
-                        <h6 class="heading-small text-muted mb-4">Guest information</h6>
+                        <h6 class="heading-small text-muted mb-4">Employee Registration</h6>
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -32,12 +32,6 @@
                                         <label class="form-control-label" for="input-username">Name</label>
                                         <input type="text" id="name" name="name" class="form-control"
                                             placeholder="Name">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-email">Email address</label>
-                                        <input type="email" id="email" name="email" class="form-control" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -106,51 +100,9 @@
                             </div>
                         </div>
                         <hr class="my-4" />
-                        <h6 class="heading-small text-muted mb-4">Proof</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Proof Type</label>
-                                    <input id="proof_type" name="proof_type" class="form-control" type="text">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Proof</label>
-                                    <input id="proof" name="proof" class="form-control" type="file">
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="my-4" />
-                        <!-- Description -->
-                        <h6 class="heading-small text-muted mb-4">Description</h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Host</label>
-                                    <input id="host" name="host" class="form-control" type="text">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Role</label>
-                                    <input id="role" name="role" class="form-control" type="text">
-                                </div>
-                            </div>
-                        </div>
-                          
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-control-label">Description</label>
-                                    <textarea rows="4" class="form-control" name="description"
-                                        placeholder="A few words about you ..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-
                         <hr class="my-4" />
                         <!-- User Login -->
-                        <h6 class="heading-small text-muted mb-4">Create Guest Account</h6>
+                        <h6 class="heading-small text-muted mb-4">Create User Account</h6>
                         <div class="pl-lg-4">
 
                             <div class="row">

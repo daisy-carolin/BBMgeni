@@ -201,11 +201,12 @@ class SecurityPersonnelForm(forms.ModelForm):
         fields = '__all__'
         widgets={
           'name':forms.TextInput(attrs={'class':'form-control'}),
-          'email':forms.TextInput(attrs={'readonly':'readonly'}),
+          'department':forms.TextInput(attrs={'readonly':'readonly'}),
           'Phone_number':forms.TextInput(attrs={'readonly':'readonly'}),
-          'purpose':forms.TextInput(attrs={'readonly':'readonly'}),
-          'invite_date':forms.TextInput(attrs={'readonly':'readonly'}),
-          'invite_time':forms.TextInput(attrs={'readonly':'readonly'}),
+          'id_number':forms.TextInput(attrs={'readonly':'readonly'}),
+          'roles':forms.TextInput(attrs={'readonly':'readonly'}),
+          'staff_number':forms.TextInput(attrs={'readonly':'readonly'}),
+          'status':forms.TextInput(attrs={'readonly':'readonly'}),
           }
     
     def __init__(self, *args, **kwargs):

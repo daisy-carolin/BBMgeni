@@ -17,10 +17,10 @@
     <div class="col-12">
       <div class="card mb-4">
         <div class="card-header pb-0">
-          <h6>Security Registration</h6>
+          <h6>Security Personnel</h6>
           <a href="{% url 'security_registration_add' %}">
           <button style="float: right;" type="button" class="btn btn-primary">
-            Add
+           Add Security
           </button></a>
         </div>
         <div class="card-body px-0 pt-0 pb-2">
@@ -28,15 +28,13 @@
             <table class="table align-items-center justify-content-center mb-0">
               <thead>
                 <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">S.no</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Register id</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">name</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">phone</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">email</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">gender</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">department</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">role</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">host</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Department</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Roles</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone Number</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">ID No</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Staff No</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">status</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Action</th>
                   <th></th>
                 </tr>
@@ -54,22 +52,24 @@
                     <p class="text-sm font-weight-bold mb-0">{{data.name}}</p>
                   </td>
                   <td>
-                    <p class="text-sm font-weight-bold mb-0">{{data.phone}}</p>
-                  </td>
-                  <td>
-                    <p class="text-sm font-weight-bold mb-0">{{data.email}}</p>
-                  </td>
-                  <td>
-                    <p class="text-sm font-weight-bold mb-0">{{data.gender}}</p>
-                  </td>
-                  <td>
                     <p class="text-sm font-weight-bold mb-0">{{data.department}}</p>
                   </td>
                   <td>
-                    <p class="text-sm font-weight-bold mb-0">{{data.role}}</p>
+                    <p class="text-sm font-weight-bold mb-0">{{data.roles}}</p>
                   </td>
                   <td>
-                    <p class="text-sm font-weight-bold mb-0">{{data.host}}</p>
+                    <p class="text-sm font-weight-bold mb-0">{{data.phone}</p>
+                  </td>
+                  <td>
+                    <p class="text-sm font-weight-bold mb-0">{{data.id_No}}</p>
+                  </td>
+                  <td>
+                    <p class="text-sm font-weight-bold mb-0">{{data.staff_No}}</p>
+                  </td>
+                  <td>
+                    
+                  
+                    <p class="text-sm font-weight-bold mb-0">{{data.status}}</p>
                   </td>
                   <td >
                     <div class="dropdown">
@@ -98,4 +98,5 @@
 
 {% block script_block %}
 
-{% endblock  %}
+{% endblock  %} 
+                   
