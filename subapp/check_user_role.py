@@ -25,7 +25,7 @@ def check_role_is_local_admin(user):
     
 def check_role_is_portal_user(user):
     if user.is_authenticated and user.role.role_name == "PortalUser":
-        return True
+        return redirect('/invitation_add.html')
     else:
         return redirect('/login')
 
