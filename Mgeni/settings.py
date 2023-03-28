@@ -77,12 +77,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Mgeni.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / "db.sqlite3",
-    }
-}
+# local db
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -101,16 +102,16 @@ DATABASES = {
 # email: admin@mgeni.com
 # pass: admin
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': "railway",
-#         'USER': "postgres",
-#         'PASSWORD': "hcEOsjbTsoRALYGYSuIO",
-#         'HOST': "containers-us-west-42.railway.app",
-#         'PORT': 7910,
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "railway",
+        'USER': "postgres",
+        'PASSWORD': "hcEOsjbTsoRALYGYSuIO",
+        'HOST': "containers-us-west-42.railway.app",
+        'PORT': 7910,
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
