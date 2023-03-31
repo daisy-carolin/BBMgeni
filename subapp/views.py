@@ -9,11 +9,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .check_user_role import check_role_is_localadmin_and_staffresident_and_portaluser, check_role_is_organisationadmin_and_localadmin, check_role_is_organisational_admin,check_role_is_portal_user, check_role_is_security, check_role_is_staffresident
 import random, string
-from .sms import SendSMS
+# from .sms import SendSMS
 from .email import send_email
 from postmarker.core import PostmarkClient
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 User = get_user_model()
 
@@ -51,18 +52,20 @@ def home(request):
 #     return render(request,'mgeni/department.html',context)
 
 
+
 def login_user(request):
     username=request.POST.get('username')
     password=request.POST.get('password')
-
     user=authenticate(request,username=username,password=password)
     if user is not None:
         login(request,user)
         return redirect('home')
-    
-
     return render(request, "mgeni/login_user.html")
 
+
+def logout_view(request):
+    logout(request)
+    return redirect('/login')
 
 @user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def host(request):
@@ -244,7 +247,7 @@ def invitation_add(request):
                 meeting_time=request.POST.get("meeting_time"),
                 meeting_date=request.POST.get("meeting_date"),
                 meeting_duration_time=request.POST.get("meeting_duration_time"),
-                purpose_of_meeting=request.POST.get("purpose_of_meeting"),
+                meeting_purpose=request.POST.get("meeting_purpose"),
                 invite_code = invite_code
             )
             name = request.POST.get("name")
@@ -253,13 +256,13 @@ def invitation_add(request):
             email=request.POST.get("email"),
 
             messages.success(request, "Sucessfully Invitation is saved")
-            SendSMS().send(
-                phone_number=request.POST.get("phone_number"),
-                meeting_date=request.POST.get("meeting_date"),
-                meeting_time=request.POST.get("meeting_time"),
-                invite_code=invite_code,
-                name=request.POST.get("name")
-                )
+            # SendSMS().send(
+            #     phone_number=request.POST.get("phone_number"),
+            #     meeting_date=request.POST.get("meeting_date"),
+            #     meeting_time=request.POST.get("meeting_time"),
+            #     invite_code=invite_code,
+            #     name=request.POST.get("name")
+            #     )
             postmark = PostmarkClient(server_token='92895c56-a7c3-4525-8a99-0bc297b6d354')
             postmark.emails.send(
                 From= "rmbugua@mgeniapp.com",
@@ -623,5 +626,6 @@ def visitorlog(request):
         return redirect("visitor_log.html")
     context = {"visitor_log.html": "active", "form": form, "roles": roles, "host": host}
     return render(request, "mgeni/visitorlog.html", context)
+
 
 

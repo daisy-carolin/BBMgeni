@@ -7,6 +7,7 @@ from django.db.models.signals import pre_save
 from django.contrib.auth.hashers import make_password
 
 
+
 class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password, **other_fields):
         other_fields.setdefault("is_staff", True)

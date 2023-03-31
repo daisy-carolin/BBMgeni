@@ -117,13 +117,14 @@
                         <div class="card-body">
                             <table class="table table-hover">
                                 <thead class="thead-light">
-                                                                 <th scope="col">S.no</th>
+                                        <th scope="col">S.no</th>
                                         <th scope="col">visitor_id</th>
                                         <th scope="col">name</th>
                                         <th scope="col">phone</th>
                                         <th scope="col">email</th>
                                         <th scope="col">meeting_date</th>
                                         <th scope="col">meeting_time</th>
+                                        <th scope="col">meeting_purpose</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
@@ -138,8 +139,10 @@
                                             <td>{{check_in.email}}</td>
                                             <td>{{check_in.meeting_date}}</td>
                                             <td>{{check_in.meeting_time|time}}</td>
+                                            <td>{{check_in.meeting_purpose}}</td>
+                                            <td>{{check_in.status}}</td>
                                             <td> <a href="{% url 'checker_edit' check_in.id %}"><button
-                                                        type="button"
+                                                        type="submit"
                                                         class="btn btn-danger btn-sm">Check-Out</button></a> </td>
                                         </form>
                                     </tr>
