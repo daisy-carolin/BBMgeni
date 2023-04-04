@@ -5,6 +5,7 @@ def check_role_is_organisational_admin(user):
         return True
 
 def check_role_is_organisationadmin_and_localadmin(user):
+    print(user)
     if user.is_authenticated and user.role.role_name == "OrganisationAdmin" or user.is_authenticated and user.role.role_name == "LocalAdmin":
         return True
     else:

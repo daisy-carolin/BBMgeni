@@ -1,4 +1,3 @@
-import formatter
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
@@ -9,11 +8,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from .check_user_role import check_role_is_localadmin_and_staffresident_and_portaluser, check_role_is_organisationadmin_and_localadmin, check_role_is_organisational_admin,check_role_is_portal_user, check_role_is_security, check_role_is_staffresident
 import random, string
-from .sms import SendSMS
+# from .sms import SendSMS
 from .email import send_email
 from postmarker.core import PostmarkClient
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 User = get_user_model()
 
@@ -51,18 +51,43 @@ def home(request):
 #     return render(request,'mgeni/department.html',context)
 
 
+
 def login_user(request):
     username=request.POST.get('username')
     password=request.POST.get('password')
-
     user=authenticate(request,username=username,password=password)
+    print(user)
     if user is not None:
+        print(f"User in role {user.role}")
         login(request,user)
         return redirect('home')
-    
-
+     
     return render(request, "mgeni/login_user.html")
 
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/login')
+
+def webcheckin_view(request):
+    if request.method == "POST":
+        a = VisitorLog(
+                visitor_name=request.POST.get("username"),
+                host=request.POST.get("role"),
+                phone_number=request.POST.get("phone_number"),
+                company_name=request.POST.get("company_name"),
+                id_number=request.POST.get("id_number"),
+                pax=request.POST.get("pax"),
+                checkin_time=request.POST.get("checkin_time"),
+                checkout_time=request.POST.get("checkout_time"),
+                vehicle_number=request.POST.get("vehicle_number"),
+                checkin_from="Web Checkin",
+                is_in=True 
+            )
+        a.save()
+        return redirect("visitorlog")
+    return render(request, "mgeni/webcheckin.html")
 
 @user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def host(request):
@@ -191,7 +216,7 @@ def security_registration_add(request):
 
         user = User.objects.create(
             email=request.POST.get("email"),
-            password=make_password(request.POST.get("password")),
+            password=make_password(request.POST.get("password")), 
             role=roles.get(role_name ="SecurityPersonnel"),       )
         
         user_name = User.objects.filter(email=name).first()
@@ -253,13 +278,13 @@ def invitation_add(request):
             email=request.POST.get("email"),
 
             messages.success(request, "Sucessfully Invitation is saved")
-            SendSMS().send(
-                phone_number=request.POST.get("phone_number"),
-                meeting_date=request.POST.get("meeting_date"),
-                meeting_time=request.POST.get("meeting_time"),
-                invite_code=invite_code,
-                name=request.POST.get("name")
-                )
+            # SendSMS().send(
+            #     phone_number=request.POST.get("phone_number"),
+            #     meeting_date=request.POST.get("meeting_date"),
+            #     meeting_time=request.POST.get("meeting_time"),
+            #     invite_code=invite_code,
+            #     name=request.POST.get("name")
+            #     )
             postmark = PostmarkClient(server_token='92895c56-a7c3-4525-8a99-0bc297b6d354')
             postmark.emails.send(
                 From= "rmbugua@mgeniapp.com",
@@ -291,6 +316,7 @@ def invitation_add(request):
 
 @user_passes_test(check_role_is_security)
 def checker(request):
+    print(request.user.role)
     # today_min = datetime.combine(datetime.date.today(), datetime.time.min)
     # today_max = datetime.combine(datetime.date.today(), datetime.time.max)
     # check_in=Security_Validation.objects.filter(created_at__range=(today_min, today_max),out_time=None) #toaday record
@@ -302,45 +328,15 @@ def checker(request):
     if search_btn:
         name = request.POST.get("search")
         check_record = Invitation.objects.filter(invite_code=name).first()
-        # emp_records = EmployeeRegistration.objects.filter(register_id=name)
-        # security_records = SecurityRegistration.objects.filter(register_id=name)
-        # if check_record:
-        #     return HttpResponseRedirect(f"checker_edit/{check_record.id}")
-        # elif emp_records:
-        #     record = "emp"
-        #     form = CheckerForm(
-        #         initial={
-        #             "user_id": request.user.id,
-        #             "visitor_id": emp_records[0].register_id,
-        #             "name": emp_records[0].name,
-        #             "Phone_number": emp_records[0].phone,
-        #             "email": emp_records[0].email,
-        #             "gender": emp_records[0].gender,
-        #         }
-        #     )
-        # elif security_records:
-        #     record = "security"
-        #     form = CheckerForm(
-        #         initial={
-        #             "user_id": request.user.id,
-        #             "visitor_id": security_records[0].register_id,
-        #             "name": security_records[0].name,
-        #             "Phone_number": security_records[0].phone,
-        #             "email": security_records[0].email,
-        #             "gender": security_records[0].gender,
-        #         }
-        #     )
+        print(check_record)
 
-    # if save:
-    #     form = CheckerForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect("checker")
-    #     else:
-    #         print(form.errors)
-    print(check_record)
+        
+        return redirect("visitor_log.html")
+
     context = {"form": form, "check_in": check_record}
     return render(request, "mgeni/checker.html", context)
+
+
 
 @user_passes_test(check_role_is_security)
 def checker_edit(request, pk):
@@ -596,32 +592,15 @@ def organisation_admin_add(request):
     return render(request, "mgeni/organisation_admin_add.html", context)
 
 
+
+    
+       
+
 def visitorlog(request):
-    suf = VisitorLog.objects.all()
-    roles = Roles.objects.all()
-    host = Host.objects.all()
-    form = CreateUserForm()
-    if request.method == "POST":
-        form = CreateUserForm(request.POST)
-        username = request.POST.get("username")
-        # if form.is_valid():
-        #     form.save()
-        user_name = User.objects.filter(username=username).first()
-        a = VisitorLog(
-            name=request.POST.get("username"),
-            host=request.POST.get("role"),
-            phone_number=request.POST.get("phone_number"),
-            id_number=request.POST.get("id_number"),
-            pax=request.POST.get("pax"),
-            checkin_time=request.POST.get("checkin_time"),
-            checkout_time=request.POST.get("checkout_time"),
-            vehicle_number=request.POST.get("vehicle_number"),
-            checkin_from=request.POST.get("checkin_from"),
-            
-        )
-        a.save()
-        return redirect("visitor_log.html")
-    context = {"visitor_log.html": "active", "form": form, "roles": roles, "host": host}
+    visitors = VisitorLog.objects.all()
+    context = {"visitors": visitors}
+
     return render(request, "mgeni/visitorlog.html", context)
+
 
 

@@ -3,14 +3,17 @@
 {% block head_block %}
 <style>
     #card {
-        width: 65%;
+        /* width: 65%; */
         margin: 0 auto;
         /* Added */
         float: none;
         /* Added */
         margin-bottom: 10px;
         /* Added */
+        padding-left: 40px;
+        padding-right: 40px;
     }
+
 </style>
 {% endblock %}
 
@@ -47,33 +50,46 @@
 
 
         {% if not check_in %}
-
+    
         <div class="card" id="card">
             <div class="card-header">
                 <h4>Entry</h4>
             </div>
-            <div class="card-body" style="padding:40px;">
-                <form method="post">
-                    {% csrf_token %}
-                    {{form.visitor_id}}
-                    {{form.user_id}}
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="">Name</label>
-                            {{form.name}}
-                        </div>
-                        <div class="col-md-6">
-                            <label for="">Phone Number</label>
-                            {{form.Phone_number}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="">Email</label>
-                            {{form.email}}
-                        </div>
-                       
-                    </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="">Name</label>
+                    <input type="text" name="name" id="name" class="form-control" required>
+                </div>
+                <div class="col-sm-6">
+                    <label for="">Phone Number</label>
+                    <input type="number" name="phone_number" id="phone_number" class="form-control" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="">Email</label>
+                    <input type="text" name="email" id="email" class="form-control" required>
+                </div>
+                <div class="col-sm-6">
+                    <label for="">PAX</label>
+                    <input type="number" name="PAX" id="PAX" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="">Company Name</label>
+                    <input type="text" name="company_name" id="company_name" class="form-control" required>
+                </div>
+                <div class="col-sm-6">
+                    <label for="">Vehicle Number</label>
+                    <input type="text" name="vehicle_number" id="vehicle_number" class="form-control" required>
+                </div>
+            </div>
+            
+
                     <div class="row">
                         <div class="col-md-6">
                             <label for="">IN Time</label>
@@ -95,15 +111,11 @@
                         <button type="submit" class="btn btn-danger" style="float: right;" name="save1"
                             value="save">Submit</button>
                     </div>
-                </form>
+        </form>
             </div>
         </div>
 
-
-
-
-
-        {% else %}
+{% else %}
 
         <!-- check in records  -->
 
@@ -112,18 +124,20 @@
                 <div class="col-xl-12 order-xl-12">
                     <div class="card">
                         <div class="card-header">
+                            
                             <h4>Today Check-IN </h4>
                         </div>
                         <div class="card-body">
                             <table class="table table-hover">
                                 <thead class="thead-light">
-                                                                 <th scope="col">S.no</th>
+                                        <th scope="col">S.no</th>
                                         <th scope="col">visitor_id</th>
                                         <th scope="col">name</th>
                                         <th scope="col">phone</th>
                                         <th scope="col">email</th>
-                                        <th scope="col">meeting_date</th>
-                                        <th scope="col">meeting_time</th>
+                                        <th scope="col">In Time</th>
+                                        <th scope="col">Out Time</th>
+                                        <th scope="col">Note</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
@@ -136,16 +150,20 @@
                                             <td>{{check_in.name}}</td>
                                             <td>{{check_in.Phone_number}}</td>
                                             <td>{{check_in.email}}</td>
-                                            <td>{{check_in.meeting_date}}</td>
-                                            <td>{{check_in.meeting_time|time}}</td>
+                                            <td>{{check_in.in_time}}</td>
+
+                                            <td>{{check_in.out_time}}</td>
+                                            <td>{{check_in.note}}</td>
+                                            <td>{{check_in.status}}</td>
                                             <td> <a href="{% url 'checker_edit' check_in.id %}"><button
-                                                        type="button"
+                                                        type="submit"
                                                         class="btn btn-danger btn-sm">Check-Out</button></a> </td>
                                         </form>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

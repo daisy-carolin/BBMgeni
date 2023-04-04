@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+
 urlpatterns = [
     path('', views.home,name='home'),
     path('login', views.login_user,name='login_user'),
@@ -17,7 +18,7 @@ urlpatterns = [
     path('invitation_add',views.invitation_add, name='invitation_add'),
     path('checker',views.checker, name='checker'),
     path('checker_edit/<pk>',views.checker_edit, name='checker_edit'),
-    path('vistiorlog',views.visitorlog, name='visitorlog'),
+    path('visitorlog',views.visitorlog, name='visitorlog'),
     path('company_customer',views.company_customer, name='company_customer'),
     path('company_customer_add',views.company_customer_add, name='company_customer_add'),
     path('local_admin_log',views.local_admin_log, name='local_admin_log'),
@@ -27,5 +28,8 @@ urlpatterns = [
     path('staff_residential',views.staff_residential, name='staff_residential'),
     path('staff_residential_add',views.staff_residential_add, name='staff_residential_add'),
     path('portaluser',views.portaluser, name='portaluser'),
-    path('portal_user_add',views.portal_user_add, name='portal_user_add')
+    path('portal_user_add',views.portal_user_add, name='portal_user_add'),
+    path('logout/', views.logout_view, name='logout'),
+    path('webcheckin/', views.webcheckin_view, name='webcheckin'),
+
 ]

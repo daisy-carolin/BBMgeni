@@ -4,7 +4,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
-
 class CreateUserForm(UserCreationForm):
     email = forms.EmailField()
 
@@ -261,12 +260,24 @@ class VisitorLogForm(forms.ModelForm):
           'company_name':forms.TextInput(attrs={'readonly':'readonly'}),
           'pax':forms.TextInput(attrs={'readonly':'readonly'}),
           'checkin_from':forms.TextInput(attrs={'readonly':'readonly'}),
-
-
           }
+          
     
     def __init__(self, *args, **kwargs):
         super(VisitorLogForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-check-input'
          
+
+class UserAccessForm(forms.ModelForm):
+    class Meta:
+        model = Roles
+        fields = '__all__'
+        widgets={
+}
+
+
+class WebCheckingForm(forms.ModelForm):
+    class Meta:
+        model = VisitorLog
+        fields = "__all__"

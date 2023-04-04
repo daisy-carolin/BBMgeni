@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import User, BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
@@ -5,6 +6,7 @@ from django.utils import timezone
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.contrib.auth.hashers import make_password
+
 
 
 class CustomUserManager(BaseUserManager):
@@ -29,7 +31,7 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
-    role = models.ForeignKey("Roles", on_delete=models.CASCADE, null=True, blank=True)
+    role = models.ForeignKey("Roles", on_delete=models.CASCADE, null=True, blank=True,related_name="user_role")
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
@@ -126,7 +128,8 @@ class Checker(models.Model):
     gender= models.CharField(max_length=100)
     in_time=models.TimeField()
     out_time=models.TimeField(blank=True,null=True)
-    note= models.TextField(blank=True)
+    note= models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now_add=True)
     
@@ -303,11 +306,28 @@ class VisitorLog(models.Model):
     phone_number = models.CharField(max_length=100)
     id_number=models.CharField(max_length=100,blank=True,null=True)
     company_name=models.CharField(max_length=100)
-    checkin_time=models.DateField()
-    checkout_time=models.TimeField()
-    checkin_from=models.TimeField()
+    checkin_time=models.CharField(max_length=100)
+    checkout_time=models.CharField(max_length=100)
+    is_in = models.BooleanField(default=False)
+    checkin_from=models.CharField(max_length=100)
     vehicle_number = models.CharField(max_length=100, null=True)
     pax = models.CharField(max_length=100, null=True)
 
-    def __str__(self) -> str:
-        return self.purpose
+    def __str__(self):
+        return self.visitor_name
+    
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_organisationadmin= models.BooleanField(default=False)
+    is_localadmin = models.BooleanField(default=False)
+    is_securitypersonnel = models.BooleanField(default=False)
+    is_staffresident = models.BooleanField(default=False)
+    is_portaluser = models.BooleanField(default=False)
+
+
+
+
+
+
+
