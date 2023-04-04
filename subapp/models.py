@@ -128,7 +128,7 @@ class Checker(models.Model):
     in_time=models.TimeField()
     out_time=models.TimeField(blank=True,null=True)
     note= models.TextField(blank=True)
-    status = models.CharField(max_length=100)
+    status = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now_add=True)
     
@@ -307,7 +307,7 @@ class VisitorLog(models.Model):
     company_name=models.CharField(max_length=100)
     checkin_time=models.DateField()
     checkout_time=models.TimeField()
-    is_in = models.BooleanField()
+    is_in = models.BooleanField(default=False)
     checkin_from=models.TimeField()
     vehicle_number = models.CharField(max_length=100, null=True)
     pax = models.CharField(max_length=100, null=True)

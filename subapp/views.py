@@ -311,45 +311,24 @@ def checker(request):
         name = request.POST.get("search")
         check_record = Invitation.objects.filter(invite_code=name).first()
         print(check_record)
-        # emp_records = EmployeeRegistration.objects.filter(register_id=name)
-        # security_records = SecurityRegistration.objects.filter(register_id=name)
-        # if check_record:
-        #     return HttpResponseRedirect(f"checker_edit/{check_record.id}")
-        # elif emp_records:
-        #     record = "emp"
-        #     form = CheckerForm(
-        #         initial={
-        #             "user_id": request.user.id,
-        #             "visitor_id": emp_records[0].register_id,
-        #             "name": emp_records[0].name,
-        #             "Phone_number": emp_records[0].phone,
-        #             "email": emp_records[0].email,
-        #            
-        #         }
-        #     )
-        # elif security_records:
-        #     record = "security"
-        #     form = CheckerForm(
-        #         initial={
-        #             "user_id": request.user.id,
-        #             "visitor_id": security_records[0].register_id,
-        #             "name": security_records[0].name,
-        #             "Phone_number": security_records[0].phone,
-        #             "email": security_records[0].email,
-        #             "gender": security_records[0].gender,
-        #         }
-        #     )
 
-    # if save:
-    #     form = VisitorLog(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect("visitorlog")
-    #     else:
-    #         print(form.errors)
+        a = VisitorLog(
+            visitor_name=request.POST.get("username"),
+            host=request.POST.get("role"),
+            phone_number=request.POST.get("phone_number"),
+            id_number=request.POST.get("id_number"),
+            pax=request.POST.get("pax"),
+            checkin_time=request.POST.get("checkin_time"),
+            checkout_time=request.POST.get("checkout_time"),
+            vehicle_number=request.POST.get("vehicle_number"),
+            checkin_from=request.POST.get("checkin_from"),
+            is_in=True 
+        )
+        a.save()
+        return redirect("visitor_log.html")
+
     context = {"form": form, "check_in": check_record}
     return render(request, "mgeni/checker.html", context)
-    # return render(request, 'mgeni/checker.html', {'data': data})
 
 
 

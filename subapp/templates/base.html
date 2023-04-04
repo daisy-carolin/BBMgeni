@@ -153,7 +153,7 @@
         </li>
         {% endif %}
 
-        {% if  user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" or user.role.role_name == "StaffResident" or user.role.role_name == "PortalUser" %}
+        {% if  user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" or user.role.role_name == "Staff/Resident" or user.role.role_name == "PortalUser" %}
         <li class="nav-item">
           <a class="nav-link " href="{% url 'invitation' %}">
             <div
