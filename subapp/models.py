@@ -30,7 +30,7 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
-    role = models.ForeignKey("Roles", on_delete=models.CASCADE, null=True, blank=True)
+    role = models.ForeignKey("Roles", on_delete=models.CASCADE, null=True, blank=True,related_name="user_role")
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
@@ -128,6 +128,7 @@ class Checker(models.Model):
     in_time=models.TimeField()
     out_time=models.TimeField(blank=True,null=True)
     note= models.TextField(blank=True)
+    status = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now_add=True)
     
@@ -306,9 +307,35 @@ class VisitorLog(models.Model):
     company_name=models.CharField(max_length=100)
     checkin_time=models.DateField()
     checkout_time=models.TimeField()
+    is_in = models.BooleanField()
     checkin_from=models.TimeField()
     vehicle_number = models.CharField(max_length=100, null=True)
     pax = models.CharField(max_length=100, null=True)
 
     def __str__(self) -> str:
         return self.purpose
+    
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_organisationadmin= models.BooleanField(default=False)
+    is_localadmin = models.BooleanField(default=False)
+    is_securitypersonnel = models.BooleanField(default=False)
+    is_staffresident = models.BooleanField(default=False)
+    is_portaluser = models.BooleanField(default=False)
+
+class UserAcces(models.Model):
+    visitor_log= models.BooleanField(default=False)
+    invite_code = models.BooleanField(default=False)
+    dashboard_view = models.BooleanField(default=False)
+    invites= models.BooleanField(default=False)
+    checkin = models.BooleanField(default=False)
+    hosts = models.BooleanField(default=False)
+    departments = models.BooleanField(default=False)
+    roles = models.BooleanField(default=False)
+    purpose = models.BooleanField(default=False)
+
+
+
+
+

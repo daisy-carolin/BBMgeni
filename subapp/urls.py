@@ -30,4 +30,5 @@ urlpatterns = [
     path('portaluser',views.portaluser, name='portaluser'),
     path('portal_user_add',views.portal_user_add, name='portal_user_add'),
     path('logout/', views.logout_view, name='logout'),
+    path('useraccess',views.useraccess, name='useraccess'),
 ]

@@ -60,6 +60,7 @@
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
+        {% if user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" %}
         <li class="nav-item">
           <a class="nav-link active" href="/">
             <div
@@ -69,15 +70,8 @@
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link " href="{% url 'visitorlog' %}">
-            <div
-              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Visitor Log </span>
-          </a>
-        </li>
+        {% endif %}
+        {% if user.role.role_name == "superuser" %}
         <li class="nav-item">
           <a class="nav-link " href="{% url 'organisation_admin_log' %}">
             <div
@@ -87,6 +81,9 @@
             <span class="nav-link-text ms-1">Organisation Admin</span>
           </a>
         </li>
+        {% endif %}
+        
+        {% if user.role.role_name == "OrganisationAdmin" %}
          <li class="nav-item">
           <a class="nav-link " href="{% url 'local_admin_log' %}">
             <div
@@ -96,6 +93,28 @@
             <span class="nav-link-text ms-1">Local Admin</span>
           </a>
         </li>
+        {% endif %}
+        <!-- <li class="nav-item">
+          <a class="nav-link " href="{% url 'useraccess' %}">
+            <div
+              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">User Access</span>
+          </a>
+          </li> -->
+        
+        {% if user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" %}
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'visitorlog' %}">
+            <div
+              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Visitor Log </span>
+          </a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link " href="{% url 'employee_registration' %}">
             <div
@@ -132,6 +151,9 @@
             <span class="nav-link-text ms-1">Staff/Resident</span>
           </a>
         </li>
+        {% endif %}
+
+        {% if  user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" or user.role.role_name == "StaffResident" or user.role.role_name == "PortalUser" %}
         <li class="nav-item">
           <a class="nav-link " href="{% url 'invitation' %}">
             <div
@@ -141,6 +163,10 @@
             <span class="nav-link-text ms-1">Invites</span>
           </a>
         </li>
+        {% endif %}
+
+        
+        {% if user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" or user.role.role_name == "SecurityPersonnel" %}
         <li class="nav-item">
           <a class="nav-link " href="{% url 'checker' %}">
             <div
@@ -150,6 +176,9 @@
             <span class="nav-link-text ms-1">check In</span>
           </a>
         </li>
+        {% endif %}
+
+        {% if user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" %}
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">System Setup</h6>
         </li>
@@ -181,7 +210,7 @@
             <span class="nav-link-text ms-1">Purpose</span>
           </a>
         </li>
-
+        {% endif %}
       </ul>
     </div>
 
@@ -236,7 +265,7 @@
            
               <li class="nav-item px-3 d-flex align-items-center">
                 
-                <button class="btn btn-sm btn-primary text white style="float: right;>
+                <button class="btn btn-sm btn-primary text color="white" style="float: right;" >
                   <a href="{% url 'logout' %}">Logout</a> </button>  </li>
                
 

@@ -57,10 +57,14 @@ def login_user(request):
     username=request.POST.get('username')
     password=request.POST.get('password')
     user=authenticate(request,username=username,password=password)
+    print(user)
     if user is not None:
+        print(f"User in role {user.role}")
         login(request,user)
         return redirect('home')
+     
     return render(request, "mgeni/login_user.html")
+
 
 
 def logout_view(request):
@@ -194,7 +198,7 @@ def security_registration_add(request):
 
         user = User.objects.create(
             email=request.POST.get("email"),
-            password=make_password(request.POST.get("password")),
+            password=make_password(request.POST.get("password")), 
             role=roles.get(role_name ="SecurityPersonnel"),       )
         
         user_name = User.objects.filter(email=name).first()
@@ -247,7 +251,7 @@ def invitation_add(request):
                 meeting_time=request.POST.get("meeting_time"),
                 meeting_date=request.POST.get("meeting_date"),
                 meeting_duration_time=request.POST.get("meeting_duration_time"),
-                meeting_purpose=request.POST.get("meeting_purpose"),
+                purpose_of_meeting=request.POST.get("purpose_of_meeting"),
                 invite_code = invite_code
             )
             name = request.POST.get("name")
@@ -294,6 +298,7 @@ def invitation_add(request):
 
 @user_passes_test(check_role_is_security)
 def checker(request):
+    print(request.user.role)
     # today_min = datetime.combine(datetime.date.today(), datetime.time.min)
     # today_max = datetime.combine(datetime.date.today(), datetime.time.max)
     # check_in=Security_Validation.objects.filter(created_at__range=(today_min, today_max),out_time=None) #toaday record
@@ -305,6 +310,7 @@ def checker(request):
     if search_btn:
         name = request.POST.get("search")
         check_record = Invitation.objects.filter(invite_code=name).first()
+        print(check_record)
         # emp_records = EmployeeRegistration.objects.filter(register_id=name)
         # security_records = SecurityRegistration.objects.filter(register_id=name)
         # if check_record:
@@ -318,7 +324,7 @@ def checker(request):
         #             "name": emp_records[0].name,
         #             "Phone_number": emp_records[0].phone,
         #             "email": emp_records[0].email,
-        #             "gender": emp_records[0].gender,
+        #            
         #         }
         #     )
         # elif security_records:
@@ -335,15 +341,17 @@ def checker(request):
         #     )
 
     # if save:
-    #     form = CheckerForm(request.POST)
+    #     form = VisitorLog(request.POST)
     #     if form.is_valid():
     #         form.save()
-    #         return redirect("checker")
+    #         return redirect("visitorlog")
     #     else:
     #         print(form.errors)
-    print(check_record)
     context = {"form": form, "check_in": check_record}
     return render(request, "mgeni/checker.html", context)
+    # return render(request, 'mgeni/checker.html', {'data': data})
+
+
 
 @user_passes_test(check_role_is_security)
 def checker_edit(request, pk):
@@ -599,6 +607,36 @@ def organisation_admin_add(request):
     return render(request, "mgeni/organisation_admin_add.html", context)
 
 
+def useraccess(request):
+    suf = UserAcces.objects.all()
+    roles = Roles.objects.all()
+    host = Host.objects.all()
+    form = CreateUserForm()
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        username = request.POST.get("username")
+        # if form.is_valid():
+        #     form.save()
+        user_name = User.objects.filter(username=username).first()
+        a = UserAcces(
+            visitor_log=request.POST.get("visitor_log"),
+            invites=request.POST.get("invites"),
+            check_in=request.POST.get("check_in"),
+            hosts=request.POST.get("hosts"),
+            roles=request.POST.get("roles"),
+            purpose=request.POST.get("purpose"),
+            invite_code=request.POST.get("invite_code"),
+            dashboard_view=request.POST.get("dashboard_view"),
+            departments=request.POST.get("departments"),
+            is_in=True 
+        )
+        a.save()
+        return redirect("user_accsess.html")
+    context = {"user_accsess.html": "active", "form": form, "roles": roles, "host": host}
+    return render(request, "mgeni/user_accsess.html", context)
+    
+       
+
 def visitorlog(request):
     suf = VisitorLog.objects.all()
     roles = Roles.objects.all()
@@ -620,7 +658,7 @@ def visitorlog(request):
             checkout_time=request.POST.get("checkout_time"),
             vehicle_number=request.POST.get("vehicle_number"),
             checkin_from=request.POST.get("checkin_from"),
-            
+            is_in=True 
         )
         a.save()
         return redirect("visitor_log.html")

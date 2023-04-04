@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+<style>
+    #card {
+        width: 65%;
+        margin: 0 auto;
+        height: 500px;
+        /* Added */
+        float: none;
+        /* Added */
+        margin-bottom: 10px;
+        /* Added */
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
+    }
+    h1{
+        
+         font-size: large;
+        /* text-align: center;  */
+    }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+
+<!-- Page content -->
+<br><br><br>
+<div class="card" id="card">
+    <h1>Roles and Permissions</h1>
+<div class="row">
+    <div class="col-lg-6">
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+    <label class="form-check-label" for="flexCheckDefault">
+    Dashboard View
+    </label>
+  </div>
+</div>
+  <div class="col-lg-6">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+    <label class="form-check-label" for="flexCheckChecked">
+    Visitor Log
+    </label>
+</div>
+  </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault">
+       Roles
+        </label>
+      </div>
+    </div>
+      <div class="col-lg-6">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+        Purpose
+        </label>
+    </div>
+      </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+          Invites
+            </label>
+          </div>
+        </div>
+          <div class="col-lg-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+            <label class="form-check-label" for="flexCheckChecked">
+           Hosts
+            </label>
+        </div>
+          </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+              Checkin 
+                </label>
+              </div>
+            </div>
+              <div class="col-lg-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                <label class="form-check-label" for="flexCheckChecked">
+                Invite Code
+                </label>
+            </div>
+              </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                 System Setup
+                    </label>
+                  </div>
+                </div>
+                  <div class="col-lg-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                    Visitors Ceckout
+                    </label>
+                </div>
+                  </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                     User Delete
+                        </label>
+                      </div>
+                    </div>
+                      <div class="col-lg-6">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                        <label class="form-check-label" for="flexCheckChecked">
+                       User Add
+                        </label>
+                    </div>
+                      </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                         Invites List
+                            </label>
+                          </div>
+                        </div>
+                          <div class="col-lg-6">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                           Invites View
+                            </label>
+                        </div>
+                          </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                              Visitors Report View 
+                                </label>
+                              </div>
+                            </div>
+                              <div class="col-lg-6">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                <label class="form-check-label" for="flexCheckChecked">
+                               Visitors Reports
+                                </label>
+                            </div>
+                              </div>
+                                </div>
+            </div>
+{% endblock %}
+
+
+
+{% block script_block %}
+
+{% endblock %}
