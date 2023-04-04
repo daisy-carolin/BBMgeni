@@ -260,8 +260,6 @@ class VisitorLogForm(forms.ModelForm):
           'company_name':forms.TextInput(attrs={'readonly':'readonly'}),
           'pax':forms.TextInput(attrs={'readonly':'readonly'}),
           'checkin_from':forms.TextInput(attrs={'readonly':'readonly'}),
-
-
           }
           
     
@@ -276,7 +274,10 @@ class UserAccessForm(forms.ModelForm):
         model = Roles
         fields = '__all__'
         widgets={
-          
-
 }
-          
+
+
+class WebCheckingForm(forms.ModelForm):
+    class Meta:
+        model = VisitorLog
+        fields = "__all__"

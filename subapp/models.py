@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import User, BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
@@ -305,15 +306,15 @@ class VisitorLog(models.Model):
     phone_number = models.CharField(max_length=100)
     id_number=models.CharField(max_length=100,blank=True,null=True)
     company_name=models.CharField(max_length=100)
-    checkin_time=models.DateField()
-    checkout_time=models.TimeField()
+    checkin_time=models.CharField(max_length=100)
+    checkout_time=models.CharField(max_length=100)
     is_in = models.BooleanField(default=False)
-    checkin_from=models.TimeField()
+    checkin_from=models.CharField(max_length=100)
     vehicle_number = models.CharField(max_length=100, null=True)
     pax = models.CharField(max_length=100, null=True)
 
-    def __str__(self) -> str:
-        return self.purpose
+    def __str__(self):
+        return self.visitor_name
     
 
 class UserProfile(models.Model):
@@ -324,16 +325,7 @@ class UserProfile(models.Model):
     is_staffresident = models.BooleanField(default=False)
     is_portaluser = models.BooleanField(default=False)
 
-class UserAcces(models.Model):
-    visitor_log= models.BooleanField(default=False)
-    invite_code = models.BooleanField(default=False)
-    dashboard_view = models.BooleanField(default=False)
-    invites= models.BooleanField(default=False)
-    checkin = models.BooleanField(default=False)
-    hosts = models.BooleanField(default=False)
-    departments = models.BooleanField(default=False)
-    roles = models.BooleanField(default=False)
-    purpose = models.BooleanField(default=False)
+
 
 
 

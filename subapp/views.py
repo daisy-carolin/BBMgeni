@@ -70,6 +70,25 @@ def logout_view(request):
     logout(request)
     return redirect('/login')
 
+def webcheckin_view(request):
+    if request.method == "POST":
+        a = VisitorLog(
+                visitor_name=request.POST.get("username"),
+                host=request.POST.get("role"),
+                phone_number=request.POST.get("phone_number"),
+                company_name=request.POST.get("company_name"),
+                id_number=request.POST.get("id_number"),
+                pax=request.POST.get("pax"),
+                checkin_time=request.POST.get("checkin_time"),
+                checkout_time=request.POST.get("checkout_time"),
+                vehicle_number=request.POST.get("vehicle_number"),
+                checkin_from="Web Checkin",
+                is_in=True 
+            )
+        a.save()
+        return redirect("visitorlog")
+    return render(request, "mgeni/webcheckin.html")
+
 @user_passes_test(check_role_is_organisationadmin_and_localadmin)
 def host(request):
     records = Host.objects.all()
@@ -311,19 +330,7 @@ def checker(request):
         check_record = Invitation.objects.filter(invite_code=name).first()
         print(check_record)
 
-        a = VisitorLog(
-            visitor_name=request.POST.get("username"),
-            host=request.POST.get("role"),
-            phone_number=request.POST.get("phone_number"),
-            id_number=request.POST.get("id_number"),
-            pax=request.POST.get("pax"),
-            checkin_time=request.POST.get("checkin_time"),
-            checkout_time=request.POST.get("checkout_time"),
-            vehicle_number=request.POST.get("vehicle_number"),
-            checkin_from=request.POST.get("checkin_from"),
-            is_in=True 
-        )
-        a.save()
+        
         return redirect("visitor_log.html")
 
     context = {"form": form, "check_in": check_record}
@@ -585,62 +592,14 @@ def organisation_admin_add(request):
     return render(request, "mgeni/organisation_admin_add.html", context)
 
 
-def useraccess(request):
-    suf = UserAcces.objects.all()
-    roles = Roles.objects.all()
-    host = Host.objects.all()
-    form = CreateUserForm()
-    if request.method == "POST":
-        form = CreateUserForm(request.POST)
-        username = request.POST.get("username")
-        # if form.is_valid():
-        #     form.save()
-        user_name = User.objects.filter(username=username).first()
-        a = UserAcces(
-            visitor_log=request.POST.get("visitor_log"),
-            invites=request.POST.get("invites"),
-            check_in=request.POST.get("check_in"),
-            hosts=request.POST.get("hosts"),
-            roles=request.POST.get("roles"),
-            purpose=request.POST.get("purpose"),
-            invite_code=request.POST.get("invite_code"),
-            dashboard_view=request.POST.get("dashboard_view"),
-            departments=request.POST.get("departments"),
-            is_in=True 
-        )
-        a.save()
-        return redirect("user_accsess.html")
-    context = {"user_accsess.html": "active", "form": form, "roles": roles, "host": host}
-    return render(request, "mgeni/user_accsess.html", context)
+
     
        
 
 def visitorlog(request):
-    suf = VisitorLog.objects.all()
-    roles = Roles.objects.all()
-    host = Host.objects.all()
-    form = CreateUserForm()
-    if request.method == "POST":
-        form = CreateUserForm(request.POST)
-        username = request.POST.get("username")
-        # if form.is_valid():
-        #     form.save()
-        user_name = User.objects.filter(username=username).first()
-        a = VisitorLog(
-            name=request.POST.get("username"),
-            host=request.POST.get("role"),
-            phone_number=request.POST.get("phone_number"),
-            id_number=request.POST.get("id_number"),
-            pax=request.POST.get("pax"),
-            checkin_time=request.POST.get("checkin_time"),
-            checkout_time=request.POST.get("checkout_time"),
-            vehicle_number=request.POST.get("vehicle_number"),
-            checkin_from=request.POST.get("checkin_from"),
-            is_in=True 
-        )
-        a.save()
-        return redirect("visitor_log.html")
-    context = {"visitor_log.html": "active", "form": form, "roles": roles, "host": host}
+    visitors = VisitorLog.objects.all()
+    context = {"visitors": visitors}
+
     return render(request, "mgeni/visitorlog.html", context)
 
 

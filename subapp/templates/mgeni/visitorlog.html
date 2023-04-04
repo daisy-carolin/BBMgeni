@@ -55,66 +55,6 @@
 {% endblock %} {% block body_block %} {% load static %}
 
 <!-- Page content -->
-<<<<<<< HEAD
-<br><br><br>
-<div class="row" style="padding: 30px;">
-    <div class="col-12">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h4>Visitors</h4>
-            </div>
-            <div class="card-body" style="overflow-x: scroll;">
-                <table class="table table-hover" id="tableID">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col"> Visitor Name</th>
-                            <th scope="col">Host</th>
-                            <th scope="col">ID No</th>
-                            <th scope="col">Phone Number</th>
-                            <th scope="col">Checkin Time</th>
-                            <th scope="col">Checkout Time</th>
-                            <th scope="col">Vehicle No.</th>
-                            <th scope="col">Company Name</th>
-                            <th scope="col">PAX</th>
-                           
-                            <th scope="col">Checkin From</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for data in records %}
-                        <tr>
-                            <td>{{forloop.counter}}</td>
-                            <td>{{data.visitor_name}}</td>
-                            <td>{{data.host}}</td>
-                            <td>{{data.id_number}}</td>
-                            <td>{{data.phone_number}}</td>
-                            <td>{{data.checkin_time}}</td>
-                            <td>{{data.checkout_time}}</td>
-                            <td>{{data.vehicle_number}}</td>
-                            <td>{{data.company_name}}</td>
-                            <td>{{data.PAX}}</td>
-                            
-                            <td>{{data.checkin_from}}</td>
-                            <td style="width: 12%;">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <i class="fas fa-arrow-up text-success mr-3"></i> {{data.in_time}}
-                                    </div>
-                                    {% if not data.out_time == None %}
-                                    <div class="col-md-12">
-                                        <i class="fas fa-arrow-down text-warning mr-3"></i> {{data.out_time}}
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </td>
-                            <td>{{data.created_at|date}}</td>
-                        </tr>
-
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-=======
 <br /><br /><br />
 <div class="row" style="padding: 30px">
   <div class="col-12">
@@ -123,16 +63,19 @@
         <h4>Visitors</h4>
         <div class="header-button">
           <div class="head-button"><button>Invite Code</button></div>
-          <div class="head-button"><button>Web Checkin</button></div>
->>>>>>> 1b180c95a42533414b1615d67d49b711ebbb6072
-        </div>
+          
+           <a href="{% url 'webcheckin' %}">
+            <div class="head-button"><button>Web Checkin</button></div>
+        </a>
+   
+          </div>
       </div>
       <div class="card-body" style="overflow-x: scroll">
         <table class="table table-hover" id="tableID">
           <thead class="thead-light">
             <tr>
+              <th scope="col">ID</th>
               <th scope="col">Visitor Name</th>
-              <th scope="col">Host</th>
               <th scope="col">ID No</th>
               <th scope="col">Phone Number</th>
               <th scope="col">Checkin Time</th>
@@ -144,11 +87,10 @@
             </tr>
           </thead>
           <tbody>
-            {% for data in records %}
+            {% for data in visitors %}
             <tr>
               <td>{{forloop.counter}}</td>
               <td>{{data.visitor_name}}</td>
-              <td>{{data.host}}</td>
               <td>{{data.id_number}}</td>
               <td>{{data.phone_number}}</td>
               <td>{{data.checkin_time}}</td>
@@ -182,7 +124,8 @@
   </div>
 </div>
 
-{% endblock %} {% block script_block %}
+{% endblock %} 
+{% block script_block %}
 <script>
   $(document).ready(function () {
     $('#tableID').DataTable({});

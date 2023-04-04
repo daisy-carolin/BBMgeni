@@ -1,0 +1,100 @@
+{% block body_block %}
+{% load static %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<style>
+    #card {
+        width: 65%;
+        margin: 0 auto;
+        /* Added */
+        float: none;
+        /* Added */
+        margin-bottom: 10px;
+        /* Added */
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    #webcheck{
+        width: 65%;
+    }
+    
+
+</style>
+
+    <div class="container">
+
+        <div class="card" class="card">
+            <div class="card-header">
+                <h4>Entry</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" id="form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Name</label>
+                            <input type="text" name="username" id="username" class="form-control" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="">Phone Number</label>
+                            <input type="number" name="phone_number" id="phone_number" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Email</label>
+                            <input type="text" name="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="">Id Number</label>
+                            <input type="text" name="id_number" id="id_number" class="form-control" required>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="">PAX</label>
+                            <input type="number" name="pax" id="PAX" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="">Company Name</label>
+                            <input type="text" name="company_name" id="company_name" class="form-control" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="">Vehicle Number</label>
+                            <input type="text" name="vehicle_number" id="vehicle_number" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                            <div class="col-md-6">
+                                <label for="">Checkin Time</label> <br>
+                                <input name="checkin_time" id="checkin_time" type="time">
+                            </div>
+                            <div class="col-md-6"> 
+                                <label for="">Checkout Time</label>
+                                <br>
+                                 <input name="checkout_time" id="checkout_time" type="time">
+                            </div>
+                        </div>
+                            <br>
+                            <div>
+                                <button type="submit" class="btn btn-danger" style="float: right;" name="save1"
+                                    value="save">Submit</button>
+                            </div>
+                </form>
+            </div>
+      
+            </div>
+        </div>
+
+ 
+
+
+{% endblock %}
+
+
+
+{% block script_block %}
+
+{% endblock %}
