@@ -106,7 +106,9 @@
             <span class="nav-link-text ms-1">Visitor Log </span>
           </a>
         </li>
-
+        {% endif %}
+        
+        {% if user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" or user.role.role_name == "SecurityPersonnel" %}
         <li class="nav-item">
           <a class="nav-link " href="{% url 'employee_registration' %}">
             <div
