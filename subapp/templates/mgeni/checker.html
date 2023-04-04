@@ -53,66 +53,7 @@
     
         <div class="card" id="card">
             <div class="card-header">
-                <h4>Entry</h4>
-            </div>
-        <form method="post">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-sm-6">
-                    <label for="">Name</label>
-                    <input type="text" name="name" id="name" class="form-control" required>
-                </div>
-                <div class="col-sm-6">
-                    <label for="">Phone Number</label>
-                    <input type="number" name="phone_number" id="phone_number" class="form-control" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <label for="">Email</label>
-                    <input type="text" name="email" id="email" class="form-control" required>
-                </div>
-                <div class="col-sm-6">
-                    <label for="">PAX</label>
-                    <input type="number" name="PAX" id="PAX" class="form-control" required>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-sm-6">
-                    <label for="">Company Name</label>
-                    <input type="text" name="company_name" id="company_name" class="form-control" required>
-                </div>
-                <div class="col-sm-6">
-                    <label for="">Vehicle Number</label>
-                    <input type="text" name="vehicle_number" id="vehicle_number" class="form-control" required>
-                </div>
-            </div>
-            
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="">IN Time</label>
-                            {{form.in_time}}
-                        </div>
-                        <div class="col-md-6">
-                            <label for="">OUT Time</label>
-                            {{form.out_time}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="">Notes</label>
-                            {{form.note}}
-                        </div>
-                    </div>
-                    <br>
-                    <div>
-                        <button type="submit" class="btn btn-danger" style="float: right;" name="save1"
-                            value="save">Submit</button>
-                    </div>
-        </form>
-            </div>
+                <h4>There are 0 records</h4>
         </div>
 
 {% else %}
@@ -125,7 +66,7 @@
                     <div class="card">
                         <div class="card-header">
                             
-                            <h4>Today Check-IN </h4>
+                            <h4>Today Invites</h4>
                         </div>
                         <div class="card-body">
                             <table class="table table-hover">
