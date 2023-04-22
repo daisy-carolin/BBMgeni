@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'subapp',
+    'api',
+     # required for serving swagger ui's css/js files
+    'drf_yasg',
+    'rest_framework_simplejwt',
     
 ]
 
@@ -99,30 +103,30 @@ WSGI_APPLICATION = 'Mgeni.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("PGDATABASE"),
-        'USER': os.environ.get("PGUSER"),
-        'PASSWORD': os.environ.get("PGPASSWORD"),
-        'HOST': os.environ.get("PGHOST"),
-        'PORT': os.environ.get("PGPORT"),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.environ.get("PGDATABASE"),
+#         'USER': os.environ.get("PGUSER"),
+#         'PASSWORD': os.environ.get("PGPASSWORD"),
+#         'HOST': os.environ.get("PGHOST"),
+#         'PORT': os.environ.get("PGPORT"),
+#     }
+# }
 
 # email: admin@mgeni.com
 # pass: admin
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': "railway",
-#         'USER': "postgres",
-#         'PASSWORD': "5k34u2ZayI01OK4Eitlz",
-#         'HOST': "containers-us-west-108.railway.app",
-#         'PORT': 7578,
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "railway",
+        'USER': "postgres",
+        'PASSWORD': "5k34u2ZayI01OK4Eitlz",
+        'HOST': "containers-us-west-108.railway.app",
+        'PORT': 7578,
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
