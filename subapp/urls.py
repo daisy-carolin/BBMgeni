@@ -31,5 +31,7 @@ urlpatterns = [
     path('portal_user_add',views.portal_user_add, name='portal_user_add'),
     path('logout/', views.logout_view, name='logout'),
     path('webcheckin/', views.webcheckin_view, name='webcheckin'),
+    path('organisationcheckin/', views.organisation_checkin, name='organisationcheckin'),
+
 
 ]

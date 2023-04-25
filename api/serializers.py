@@ -1,7 +1,7 @@
 from ssl import Purpose
 from rest_framework import serializers
 from subapp.forms import Branches
-from subapp.models import Checker, CompanyCustomer, EmployeeRegistration, Host, Invitation, LocalAdmin, Organisation, OrganisationCategory, OrganisationalAdmin, PortalUser, Roles, SecurityPersonnel, SecurityRegistration, StaffResident, User, VisitorLog
+from subapp.models import Checker, CompanyCustomer, EmployeeRegistration, Host, Invitation, LocalAdmin, Organisation, OrganisationCategory, OrganisationalAdmin, PortalUser, Roles, SecurityPersonnel, SecurityRegistration, StaffResident, User, VisitorLog,OrganisationCheckin
 from .models import *
 from rest_framework.validators import UniqueValidator
 from subapp.models import User
@@ -10,7 +10,7 @@ from subapp.models import User
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("email", "role", )
+        fields = ("email", "password", )
 
 
 class VisitorLogSerializer(serializers.ModelSerializer):
@@ -123,4 +123,9 @@ class PurposeSerializer(serializers.ModelSerializer):
 class HostSerializer(serializers.ModelSerializer):
     class Meta:
         model =Host
+        fields = "__all__"
+
+class OrganisationCheckinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =OrganisationCheckin
         fields = "__all__"

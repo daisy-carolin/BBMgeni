@@ -331,7 +331,7 @@ def checker(request):
         print(check_record)
 
         
-        return redirect("visitor_log.html")
+        return redirect("visitorlog")
 
     context = {"form": form, "check_in": check_record}
     return render(request, "mgeni/checker.html", context)
@@ -591,11 +591,6 @@ def organisation_admin_add(request):
     }
     return render(request, "mgeni/organisation_admin_add.html", context)
 
-
-
-    
-       
-
 def visitorlog(request):
     visitors = VisitorLog.objects.all()
     context = {"visitors": visitors}
@@ -603,4 +598,16 @@ def visitorlog(request):
     return render(request, "mgeni/visitorlog.html", context)
 
 
-
+@user_passes_test(check_role_is_organisationadmin_and_localadmin)
+def organisation_checkin(request):
+    records = OrganisationCheckin.objects.all()
+    form = OrganisationCheckinForm(initial={"user_id": request.user.id})
+    if request.method == "POST":
+        form = OrganisationCheckinForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("organisation_checkin")
+        else:
+            print(form.errors)
+    context = {"form": form, "records": records, "organisation_checkin": "active"}
+    return render(request, "mgeni/organisation_checkin.html", context)

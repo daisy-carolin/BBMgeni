@@ -21,8 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-c#g0%9y&vc7wtduw0im-hbk9z)u4u3o)qy94w$^8)qx82tic$r'
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = 'django-insecure-c#g0%9y&vc7wtduw0im-hbk9z)u4u3o)qy94w$^8)qx82tic$r'
+# SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -93,12 +93,12 @@ WSGI_APPLICATION = 'Mgeni.wsgi.application'
 
 
 # local db
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / "db.sqlite3",
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -117,16 +117,16 @@ WSGI_APPLICATION = 'Mgeni.wsgi.application'
 # email: admin@mgeni.com
 # pass: admin
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "railway",
-        'USER': "postgres",
-        'PASSWORD': "5k34u2ZayI01OK4Eitlz",
-        'HOST': "containers-us-west-108.railway.app",
-        'PORT': 7578,
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': "railway",
+#         'USER': "postgres",
+#         'PASSWORD': "5k34u2ZayI01OK4Eitlz",
+#         'HOST': "containers-us-west-108.railway.app",
+#         'PORT': 7578,
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
