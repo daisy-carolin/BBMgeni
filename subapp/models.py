@@ -326,7 +326,31 @@ class UserProfile(models.Model):
     is_portaluser = models.BooleanField(default=False)
 
 
+class OrganisationCheckin(models.Model):
+    first_name=models.CharField(max_length=50)
+    last_name=models.CharField(max_length=50)
+    visitor_id=models.CharField(max_length=50)
+    email=models.CharField(max_length=100,blank=True,null=True)
+    meeting_time=models.TimeField()
+    meeting_date=models.DateField()
+    meeting_duration_time=models.IntegerField()
+    vehicle_number = models.CharField(max_length=100, null=True)
+    pax = models.CharField(max_length=100, null=True)
+    company_name=models.CharField(max_length=100)
+    purpose=models.CharField(max_length=100)
+    host=models.CharField(max_length=50)
+    laptop_serial_number=models.CharField( max_length=20, blank=True,null=True)
+    time_in=models.TimeField()
+    temperature=models.FloatField()
+    GENDER_CHOICES=(
+        (u'M', u'Male'),
+        (u'F', u'Female'),
+        (u'O', u'Others'),
+    )
+    gender=models.CharField( max_length=1, choices=GENDER_CHOICES, null=True )
 
+    def __str__(self):
+        return self.temperature
 
 
 

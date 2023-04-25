@@ -262,7 +262,6 @@ class VisitorLogForm(forms.ModelForm):
           'checkin_from':forms.TextInput(attrs={'readonly':'readonly'}),
           }
           
-    
     def __init__(self, *args, **kwargs):
         super(VisitorLogForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
@@ -280,4 +279,9 @@ class UserAccessForm(forms.ModelForm):
 class WebCheckingForm(forms.ModelForm):
     class Meta:
         model = VisitorLog
+        fields = "__all__"
+
+class OrganisationCheckinForm(forms.ModelForm):
+    class Meta:
+        model = OrganisationCheckin
         fields = "__all__"

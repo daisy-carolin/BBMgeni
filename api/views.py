@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework import permissions
 from rest_framework.response import Response
 
-from .models import User, VisitorLog, SecurityPersonnel, StaffResident, PortalUser, LocalAdmin, Branches,OrganisationalAdmin,Organisation,OrganisationCategory,CompanyCustomer,Invitation,Checker,SecurityRegistration,EmployeeRegistration,Roles,Purpose,Host
+from .models import User, VisitorLog, SecurityPersonnel, StaffResident, PortalUser, LocalAdmin, Branches,OrganisationalAdmin,Organisation,OrganisationCategory,CompanyCustomer,Invitation,Checker,SecurityRegistration,EmployeeRegistration,Roles,Purpose,Host,OrganisationCheckin
 
 from .serializers import (
     VisitorLogSerializer,
@@ -32,6 +32,7 @@ from .serializers import (
     PurposeSerializer,
     VisitorLogSerializer,
     StaffResidentSerializer,
+    OrganisationCheckin,
     
 )
 
@@ -295,7 +296,7 @@ class InvitationView(APIView):
             serializers.save()
             name = serializers.data.get("name")
             email=serializers.data.get("email")
-            phone_number=serializers.get("phone_number")
+            phone_number=serializers.data.get("phone_number")
 
 
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
@@ -308,18 +309,17 @@ class CheckerView(APIView):
 
     @swagger_auto_schema(responses={200: CheckerSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
-        checker = Checker.objects.all()
-        serializer = CheckerSerializer( checker  , many=True)
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
-
-    @swagger_auto_schema(request_body=CheckerSerializer)
-    def post(self, request, format=None, *args, **kwargs):
-        serializers = CheckerSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(data=serializers.data, status=status.HTTP_201_CREATED)
+        invite_code = kwargs.get('invite_code', None)
+        invitation = Invitation.objects.filter(invite_code=invite_code).first()
+        if invitation is not None:
+            serializer = InvitationSerializer(invitation)
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
         else:
-            return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+            message = {
+                "detail": "INVALID invite code."
+            }
+            return Response(status=status.HTTP_404_NOT_FOUND, data=message)
+
 
 
 class SecurityRegistrationView(APIView):
@@ -433,6 +433,26 @@ class StaffResidentView(APIView):
     @swagger_auto_schema(request_body=StaffResidentSerializer)
     def post(self, request, format=None, *args, **kwargs):
         serializers = StaffResidentSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(data=serializers.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrganisationCheckinView(APIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = OrganisationCheckinSerializer
+
+    @swagger_auto_schema(responses={200:OrganisationCheckinSerializer(many=True)})
+    def get(self, format=None, *args, **kwargs):
+        organisation_checkin= OrganisationCheckin.objects.all()
+        serializer = OrganisationCheckinSerializer( organisation_checkin  , many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @swagger_auto_schema(request_body=OrganisationCheckinSerializer)
+    def post(self, request, format=None, *args, **kwargs):
+        serializers = OrganisationCheckinSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
