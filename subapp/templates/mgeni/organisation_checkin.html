@@ -2,7 +2,17 @@
 
 {% block head_block %}
 <style>
-    
+    .column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 </style>
 {% endblock %}
 
@@ -16,69 +26,111 @@
           <h6>Select Organisation Fields</h6>
             </div>
             <div class="row">
-            <div class="col-12">
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
             <label class="form-check-label">First Name</label>
             </div>
+            </div>
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
             <label class="form-check-label">Last Name</label>
             </div>
             </div>
             </div>
+            <div class="row">
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
             <label class="form-check-label">Visitor ID</label>
             </div>
+            </div>
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
             <label class="form-check-label">Email</label>
             </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
             <label class="form-check-label">Time In</label>
             </div>
+            </div>
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
             <label class="form-check-label">Meeting Duration</label>
             </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check2" name="option2" value="something" checked>
             <label class="form-check-label">Vehicle Number</label>
             </div>
+            </div>
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check3" name="option3" value="something" checked>
             <label class="form-check-label">Meeting Date</label>
             </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
             <label class="form-check-label">PAX</label>
             </div>
+            </div>
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check4" name="option4" value="something" checked>
             <label class="form-check-label">Company Name</label>
             </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check5" name="option5" value="something" checked>
             <label class="form-check-label">Purpose</label>
             </div>
+            </div>
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check6" name="option6" value="something" checked>
             <label class="form-check-label">Host</label>
             </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check7" name="option7" value="something" checked>
             <label class="form-check-label">Laptop Serial Number</label>
             </div>
+            </div>
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check8" name="option8" value="something" checked>
             <label class="form-check-label">Temperature</label>
             </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check9" name="option9" value="something" checked>
             <label class="form-check-label">Gender</label>
             </div>
+            </div>
+            <div class="col-lg-6">
             <div class="form-check">
             <input class="form-check-input" type="checkbox" id="check1" name="option10" value="something" checked>
             <label class="form-check-label">Email</label>
@@ -86,8 +138,30 @@
             </div>
             </div>
             </div>
-            <button type="submit" form="form" class="btn btn-primary">Save</button>
-       
+            </div>
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
 {% endblock %}
 
 

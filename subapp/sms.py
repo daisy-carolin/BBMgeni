@@ -9,7 +9,7 @@
 
 # sms = africastalking.SMS
 
-
+# send SMS function
 # class SendSMS:
 #     def send(self, name, phone_number, invite_code, meeting_date, meeting_time):
 #         recipients = [f"+{phone_number}"]

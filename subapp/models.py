@@ -6,8 +6,10 @@ from django.utils import timezone
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.contrib.auth.hashers import make_password
+from django.contrib.postgres.fields import JSONField
 
 
+# defining  all the models
 
 class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password, **other_fields):
@@ -46,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 
-# Create your models here.
+# Create your host models here.
 class Host(models.Model):
     user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     name=models.CharField(max_length=100,blank=True,null=True)
@@ -61,7 +63,7 @@ class HomeScreen(models.Model):
     def __str__(self):
         return str(self.password)
 
-
+# Create your purpose models here.
 class Purpose(models.Model):
     user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     name=models.CharField(max_length=100,blank=True,null=True)
@@ -69,7 +71,8 @@ class Purpose(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return str(self.name)
-
+    
+# Create your roles models here.
 class Roles(models.Model):
     # user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     role_name=models.CharField(max_length=100)
@@ -86,7 +89,8 @@ class Roles(models.Model):
     # check_in_and_out=models.BooleanField()
     def __str__(self):
         return str(self.role_name)
-    
+
+# Create your EmployeeRegistration models here. 
 class EmployeeRegistration(models.Model):
     user_id=models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name='example3')
     register_user_id=models.ForeignKey(User,related_name='example4',on_delete=models.CASCADE,null=True)
@@ -109,6 +113,7 @@ class EmployeeRegistration(models.Model):
     status=models.CharField(max_length=100,blank=True, null=True)
     created_at=models.DateTimeField(auto_now_add=True)
 
+# Create your SecurityRegistration models here.
 class SecurityRegistration(models.Model):
     name=models.CharField(max_length=100)
     phone=models.CharField(max_length=100)
@@ -119,6 +124,7 @@ class SecurityRegistration(models.Model):
     id_number=models.CharField(max_length=100)
     vehicle_number=models.CharField(max_length=100, null=True)
 
+# Create your checker models here.
 class Checker(models.Model):
     user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     visitor_id= models.CharField(max_length=100)
@@ -133,6 +139,7 @@ class Checker(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now_add=True)
     
+# Create your invitation models here.
 class Invitation(models.Model):
     invitation_id=models.CharField(max_length=100)
     visitor_id= models.CharField(max_length=100,blank=True,null=True)
@@ -152,7 +159,7 @@ class Invitation(models.Model):
     status=models.CharField(max_length=10, choices=StatusChoice.choices, default=StatusChoice.WAITING)
     created_at = models.DateTimeField(auto_now_add=True)
     
-    
+# Create your CompanyCustomer models here.  
 class CompanyCustomer(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE, null=True,related_name='example5')
     customer_user_id=models.ForeignKey(User,on_delete=models.CASCADE, null=True,related_name='example6')
@@ -165,7 +172,9 @@ class CompanyCustomer(models.Model):
     no_of_department = models.IntegerField()
     status = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
+
+# Create your OganisationCategory models here.  
 class OrganisationCategory(models.Model): 
     category_name = models.CharField(max_length=100)
     category_code=models.CharField(max_length=100)
@@ -173,6 +182,7 @@ class OrganisationCategory(models.Model):
     def __str__(self) -> str:
         return self.category_name
 
+# Create your Organisation models here.
 class Organisation(models.Model):
     organisation_name=models.CharField(max_length=100)
     phone_number=models.CharField(max_length=100,blank=True,null=True)
@@ -188,6 +198,14 @@ class Organisation(models.Model):
     def __str__(self) -> str:
         return self.organisation_name
 
+class OrganisationFields(models.Model):
+    name = models.CharField(max_length=255, blank=False)
+    type = models.CharField(max_length=255, blank=False)
+
+    def __str__(self):
+        self.name
+    
+# Create your OrganisationalAdmin models here.
 class OrganisationalAdmin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=100, null=True)
@@ -200,6 +218,7 @@ class OrganisationalAdmin(models.Model):
     maximum_branch=models.CharField(max_length=100)
     organisational_address=models.CharField(max_length=100)
     postal_code=models.CharField(max_length=100)
+    fields = models.ManyToManyField(OrganisationFields)
 
     def __str__(self) -> str:
         return self.organisational_address
@@ -213,6 +232,8 @@ class OrganisationalAdmin(models.Model):
 #     def __str__(self):
 #         return str(self.name)
 
+
+# Create your Branches models here.
 class Branches(models.Model): 
     branch_name = models.CharField(max_length=100)
     organisation = models.OneToOneField(Organisation, on_delete=models.CASCADE)
@@ -223,7 +244,7 @@ class Branches(models.Model):
     def __str__(self) -> str:
         return self.branch_name
 
-
+# Create your LocalAdmin models here.
 class LocalAdmin(models.Model): 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=100, null=True)
@@ -235,6 +256,7 @@ class LocalAdmin(models.Model):
     def __str__(self) -> str:
         return self.name
 
+# Create your PortalUser models here.
 class PortalUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=100, null=True)
@@ -249,6 +271,7 @@ class PortalUser(models.Model):
     def __str__(self) -> str:
         return self.staff_number
     
+# Create your StaffResident models here.
 class StaffResident(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=100, null=True)
@@ -264,6 +287,7 @@ class StaffResident(models.Model):
     def __str__(self) -> str:
         return self.department
     
+# Create your SecurityPersonnel models here.
 class SecurityPersonnel(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=100, null=True)
@@ -279,7 +303,7 @@ class SecurityPersonnel(models.Model):
     def __str__(self) -> str:
         return self.purpose
           
-      
+# Create your Unappointment models here.    
 class Unappoinment_visit(models.Model):
     visitor_id = models.CharField(max_length=100)
     security_id = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -299,15 +323,15 @@ class Unappoinment_visit(models.Model):
     status=models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
-
+# Create your visitorlog models here.
 class VisitorLog(models.Model):
     visitor_name = models.CharField(max_length=100)
     host = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     phone_number = models.CharField(max_length=100)
     id_number=models.CharField(max_length=100,blank=True,null=True)
     company_name=models.CharField(max_length=100)
-    checkin_time=models.CharField(max_length=100)
-    checkout_time=models.CharField(max_length=100)
+    checkin_time = models.DateTimeField()
+    checkout_time = models.DateTimeField()
     is_in = models.BooleanField(default=False)
     checkin_from=models.CharField(max_length=100)
     vehicle_number = models.CharField(max_length=100, null=True)
@@ -316,7 +340,7 @@ class VisitorLog(models.Model):
     def __str__(self):
         return self.visitor_name
     
-
+# Create your useprofile models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_organisationadmin= models.BooleanField(default=False)
@@ -325,7 +349,7 @@ class UserProfile(models.Model):
     is_staffresident = models.BooleanField(default=False)
     is_portaluser = models.BooleanField(default=False)
 
-
+# Create your organisationcheckin models here.
 class OrganisationCheckin(models.Model):
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
@@ -351,6 +375,7 @@ class OrganisationCheckin(models.Model):
 
     def __str__(self):
         return self.temperature
+  
 
 
 
