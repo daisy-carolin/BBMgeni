@@ -1,10 +1,11 @@
 from ssl import Purpose
-from rest_framework import serializers
+from rest_framework import serializers, fields
 from subapp.forms import Branches
 from subapp.models import Checker, CompanyCustomer, EmployeeRegistration, Host, Invitation, LocalAdmin, Organisation, OrganisationCategory, OrganisationalAdmin, PortalUser, Roles, SecurityPersonnel, SecurityRegistration, StaffResident, User, VisitorLog,OrganisationCheckin
 from .models import *
 from rest_framework.validators import UniqueValidator
 from subapp.models import User
+from subapp.models import ORGANISATION_FIELDS
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -59,7 +60,15 @@ class OrganisationalAdminSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class OrganisationSerializer(serializers.ModelSerializer):
+class OrganisationSerializer(serializers.HyperlinkedModelSerializer):
+    organisation_fields = fields.MultipleChoiceField(choices=ORGANISATION_FIELDS)
+    organisation_category = serializers.CharField()
+
+    class Meta:
+        model = Organisation
+        fields = "__all__"
+
+class DynamicOrganisationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organisation
         fields = "__all__"

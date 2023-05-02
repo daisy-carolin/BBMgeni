@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.contrib.auth.hashers import make_password
 from django.contrib.postgres.fields import JSONField
+from multiselectfield import MultiSelectField
 
 
 # defining  all the models
@@ -182,6 +183,25 @@ class OrganisationCategory(models.Model):
     def __str__(self) -> str:
         return self.category_name
 
+ORGANISATION_FIELDS = (
+        ('First Name','First Name'),
+        ('Last Name','Last Name'),
+        ('Visitor ID','Visitor ID'),
+        ('Email','Email'),
+        ('Meeting Date','Meeting Date'),
+        ('Meeting Time','Meeting Time'),
+        ('Meeting Duration Time','Meeting Duration Time'),
+        ('Vehicle Number','Vehicle Number'),
+        ('Pax','Pax'),
+        ('Company Name','Company Name'),
+        ('Purpose','Purpose'),
+        ('Host','Host'),
+        ('Laptop Serial Number','Laptop Serial Number'),
+        ('Time in','Time in'),
+        ('Temperature','Tempterature'),
+        ('Gender','Gender'),
+    )    
+
 # Create your Organisation models here.
 class Organisation(models.Model):
     organisation_name=models.CharField(max_length=100)
@@ -194,6 +214,7 @@ class Organisation(models.Model):
     postal_address=models.CharField(max_length=100)
     location_address=models.CharField(max_length=100)
     organisation_code=models.CharField(max_length=100)
+    organisation_fields = MultiSelectField(choices=ORGANISATION_FIELDS, max_length=255, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.organisation_name
