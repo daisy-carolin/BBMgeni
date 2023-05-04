@@ -322,7 +322,7 @@ class SecurityPersonnel(models.Model):
 
 
     def __str__(self) -> str:
-        return self.purpose
+        return self.department
           
 # Create your Unappointment models here.    
 class Unappoinment_visit(models.Model):
