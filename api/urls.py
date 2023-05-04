@@ -17,6 +17,7 @@ urlpatterns = [
     path('company_customer', views.CompanyCustomerView.as_view(),name='company_customer_api'),
     path('organisation_category', views.OrganisationCategoryView.as_view(),name='organisation_category_api'),
     path('organisation', views.OrganisationView.as_view(),name='organisation_api'),
+    path('organisation/<int:pk>', views.OrganisationDetailView.as_view(),name='organisation_detail_api'),
     path('organisational_admin', views.OrganisationalAdminView.as_view(),name='organisational_admin_api'),
     path('host', views.HostView.as_view(),name='host_api'),
     path('branches', views.BranchesView.as_view(),name='branches_api'),

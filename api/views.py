@@ -33,7 +33,7 @@ from .serializers import (
     VisitorLogSerializer,
     StaffResidentSerializer,
     OrganisationCheckin,
-    
+    DynamicOrganisationSerializer
 )
 
 from drf_yasg.utils import swagger_auto_schema
@@ -224,20 +224,31 @@ class OrganisationView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = OrganisationSerializer
 
-    @swagger_auto_schema(responses={200: OrganisationSerializer(many=True)})
-    def get(self, format=None, *args, **kwargs):
+    @swagger_auto_schema(responses={200: DynamicOrganisationSerializer(many=True)})
+    def get(self, request, format=None, *args, **kwargs):
         organisation = Organisation.objects.all()
-        serializer = OrganisationSerializer(organisation , many=True)
+        serializer = DynamicOrganisationSerializer(organisation, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=OrganisationSerializer)
     def post(self, request, format=None, *args, **kwargs):
-        serializers = OrganisationSerializer(data=request.data)
+        serializers = OrganisationSerializer(data=request.data, context={'request': request})
         if serializers.is_valid():
             serializers.save()
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class OrganisationDetailView(APIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = OrganisationSerializer
+
+    @swagger_auto_schema(responses={200: DynamicOrganisationSerializer(many=False)})
+    def get(self, request, format=None, *args, **kwargs):
+        organisation = Organisation.objects.get(id=kwargs.get("pk"))
+        print(organisation)
+        serializer = DynamicOrganisationSerializer(organisation)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
 class OrganisationCategoryView(APIView):
