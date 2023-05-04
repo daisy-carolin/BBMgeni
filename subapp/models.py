@@ -239,7 +239,7 @@ class OrganisationalAdmin(models.Model):
     maximum_branch=models.CharField(max_length=100)
     organisational_address=models.CharField(max_length=100)
     postal_code=models.CharField(max_length=100)
-    fields = models.ManyToManyField(OrganisationFields)
+    # fields = models.ManyToManyField(OrganisationFields)
 
     def __str__(self) -> str:
         return self.organisational_address
