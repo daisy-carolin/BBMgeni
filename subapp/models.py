@@ -378,21 +378,21 @@ class UserProfile(models.Model):
 
 # Create your organisationcheckin models here.
 class OrganisationCheckin(models.Model):
-    first_name=models.CharField(max_length=50)
-    last_name=models.CharField(max_length=50)
-    visitor_id=models.CharField(max_length=50)
+    first_name=models.CharField(max_length=50,blank=True,null=True)
+    last_name=models.CharField(max_length=50,blank=True,null=True)
+    visitor_id=models.CharField(max_length=50,blank=True,null=True)
     email=models.CharField(max_length=100,blank=True,null=True)
-    meeting_time=models.TimeField()
-    meeting_date=models.DateField()
-    meeting_duration_time=models.IntegerField()
+    meeting_time=models.TimeField(blank=True,null=True)
+    meeting_date=models.DateField(blank=True,null=True)
+    meeting_duration_time=models.IntegerField(blank=True,null=True)
     vehicle_number = models.CharField(max_length=100, null=True)
-    pax = models.CharField(max_length=100, null=True)
-    company_name=models.CharField(max_length=100)
-    purpose=models.CharField(max_length=100)
-    host=models.CharField(max_length=50)
+    pax = models.CharField(max_length=100, null=True,blank=True)
+    company_name=models.CharField(max_length=100,blank=True,null=True)
+    purpose=models.CharField(max_length=100,blank=True,null=True)
+    host=models.CharField(max_length=50,blank=True,null=True)
     laptop_serial_number=models.CharField( max_length=20, blank=True,null=True)
-    time_in=models.TimeField()
-    temperature=models.FloatField()
+    time_in=models.TimeField(blank=True,null=True)
+    temperature=models.FloatField(blank=True,null=True)
     GENDER_CHOICES=(
         (u'M', u'Male'),
         (u'F', u'Female'),
