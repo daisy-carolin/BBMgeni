@@ -40,10 +40,14 @@
   }
   .head-button {
     margin: 0 0.5rem;
+    
+    
   }
   .head-button button {
     border: none;
     outline: none;
+    
+
   }
   .head-button button {
     background-color: green;
@@ -62,7 +66,38 @@
       <div class="card-header header">
         <h4>Visitors</h4>
         <div class="header-button">
-          <div class="head-button"><button>Invite Code</button></div>
+
+          <div class="card-header pb-0">
+          <button style="float: right; background-color: green; color: white; border: none; outline: none; border-radius: 8px;" type="button" class="head-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Invite Code
+            </button>
+          </div>
+          <div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Invite Code</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form method="post">
+                    {% csrf_token %}
+                    <div class="col-md-12"><br>
+                        <h5>Enter Invite Code </h5><br>
+                        <input type="text" class="form-control" name="search" placeholder="Enter Invite Code......">
+                    </div><br>
+
+                    <center> <button type="submit" class="btn btn-primary" name='search_btn' value="search">➥ Check
+                        </button></center>
+
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
           
            <a href="{% url 'webcheckin' %}">
             <div class="head-button"><button>Web Checkin</button></div>
@@ -93,8 +128,8 @@
               <td>{{data.visitor_name}}</td>
               <td>{{data.id_number}}</td>
               <td>{{data.phone_number}}</td>
-              <td>{{data.checkin_time}}</td>
-              <td>{{data.checkout_time}}</td>
+              <td>{{data.check_in}}</td>
+              <td>{{data.check_out}}</td>
               <td>{{data.vehicle_number}}</td>
               <td>{{data.company_name}}</td>
               <td>{{data.PAX}}</td>
@@ -114,15 +149,33 @@
                 </div>
               </td>
               <td>{{data.created_at|date}}</td>
+              <td>
+                <form method="post" action="{% url 'check_out' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="visitor_id" value="{{ data.id }}"/>
+                  <button
+                type="submit"
+                class="btn btn-danger btn-sm">Check-Out</button>
+                </form>
+              </td>
+              
             </tr>
 
             {% endfor %}
+            
+            {% if visitor.is_in %}
+            <p>Visitor is currently checked in.</p>
+            <a href="{% url 'visitorlog' visitor.id %}">Check out</a>
+        {% elif visitor.is_out %}
+            <p>Visitor checked out at {{ visitor.check_out }}.</p>
+        {% endif %}
           </tbody>
         </table>
-      </div>
+        </div>
     </div>
   </div>
 </div>
+
 
 {% endblock %} 
 {% block script_block %}

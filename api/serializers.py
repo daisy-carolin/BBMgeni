@@ -138,3 +138,7 @@ class OrganisationCheckinSerializer(serializers.ModelSerializer):
     class Meta:
         model =OrganisationCheckin
         fields = "__all__"
+
+
+class CheckoutSerializer(serializers.Serializer):
+    visitor_log_id = serializers.IntegerField(required=True)

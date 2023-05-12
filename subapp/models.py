@@ -2,12 +2,13 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User, BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.contrib.auth.hashers import make_password
 from django.contrib.postgres.fields import JSONField
 from multiselectfield import MultiSelectField
+from django.utils import timezone
+
 
 
 # defining  all the models
@@ -133,8 +134,8 @@ class Checker(models.Model):
     Phone_number= models.CharField(max_length=100)
     email= models.CharField(max_length=100)
     gender= models.CharField(max_length=100)
-    in_time=models.TimeField()
-    out_time=models.TimeField(blank=True,null=True)
+    in_time=models.DateTimeField(default=timezone.now)
+    out_time=models.DateTimeField(blank=True, null=True)
     note= models.TextField(blank=True, null=True)
     status = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -324,7 +325,7 @@ class SecurityPersonnel(models.Model):
     def __str__(self) -> str:
         return self.department
           
-# Create your Unappointment models here.    
+# Create  your Unappointment models here.    
 class Unappoinment_visit(models.Model):
     visitor_id = models.CharField(max_length=100)
     security_id = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -351,15 +352,20 @@ class VisitorLog(models.Model):
     phone_number = models.CharField(max_length=100)
     id_number=models.CharField(max_length=100,blank=True,null=True)
     company_name=models.CharField(max_length=100)
-    checkin_time = models.DateTimeField()
-    checkout_time = models.DateTimeField()
-    is_in = models.BooleanField(default=False)
+    is_in = models.BooleanField(default=True)
     checkin_from=models.CharField(max_length=100)
     vehicle_number = models.CharField(max_length=100, null=True)
     pax = models.CharField(max_length=100, null=True)
+    check_in = models.DateTimeField(auto_now_add=True)
+    check_out = models.DateTimeField(blank=True,null=True)
 
-    def __str__(self):
-        return self.visitor_name
+    def is_in(self):
+        return self.check_out is None
+
+    def is_out(self):
+        return self.check_out is not None
+
+   
     
 # Create your useprofile models here.
 class UserProfile(models.Model):
@@ -398,6 +404,9 @@ class OrganisationCheckin(models.Model):
         return self.temperature
   
 
+class Checkout(models.Model):
+    visitor_id= models.CharField(max_length=255, blank=False,null = True)
 
-
+    def __str__(self):
+        return self.visitor_id
 

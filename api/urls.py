@@ -23,6 +23,8 @@ urlpatterns = [
     path('branches', views.BranchesView.as_view(),name='branches_api'),
     path('local_admin', views.LocalAdminView.as_view(),name='local_admin_api'),
     path('organisation_checkin', views.OrganisationCheckinView.as_view(),name='organisation_checkin_api'),
+    path('checkout', views.CheckoutView.as_view(), name='checkout_api'),
+
 
 
 ]

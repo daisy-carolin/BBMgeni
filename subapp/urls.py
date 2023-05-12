@@ -1,4 +1,6 @@
 from django.urls import path
+
+# from checkout.views import checkout
 from . import views
 
 urlpatterns = [
@@ -32,6 +34,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('webcheckin/', views.webcheckin_view, name='webcheckin'),
     path('organisationcheckin/', views.organisation_checkin, name='organisationcheckin'),
+    path('check_out/', views.check_out, name='check_out'),
+
 
 
 ]

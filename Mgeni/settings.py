@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import pytz
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,9 +49,12 @@ INSTALLED_APPS = [
      # required for serving swagger ui's css/js files
     'drf_yasg',
     'rest_framework_simplejwt',
-    'multiselectfield'
+    'multiselectfield',
     
 ]
+
+TIME_ZONE = 'Africa/Nairobi'
+USE_TZ = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

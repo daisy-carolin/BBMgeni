@@ -1,15 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from subapp.forms import VisitorLogForm
 from subapp.models import*
 
 # Create your views here.
 
-from datetime import datetime
+import datetime
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.response import Response
 
-from .models import User, VisitorLog, SecurityPersonnel, StaffResident, PortalUser, LocalAdmin, Branches,OrganisationalAdmin,Organisation,OrganisationCategory,CompanyCustomer,Invitation,Checker,SecurityRegistration,EmployeeRegistration,Roles,Purpose,Host,OrganisationCheckin
+from .models import User, VisitorLog, SecurityPersonnel, StaffResident, PortalUser, LocalAdmin, Branches,OrganisationalAdmin,Organisation,OrganisationCategory,CompanyCustomer,Invitation,Checker,SecurityRegistration,EmployeeRegistration,Roles,Purpose,Host,OrganisationCheckin,Checkout
 
 from .serializers import (
     VisitorLogSerializer,
@@ -33,7 +34,8 @@ from .serializers import (
     VisitorLogSerializer,
     StaffResidentSerializer,
     OrganisationCheckin,
-    DynamicOrganisationSerializer
+    DynamicOrganisationSerializer,
+    CheckoutSerializer,
 )
 
 from drf_yasg.utils import swagger_auto_schema
@@ -469,3 +471,37 @@ class OrganisationCheckinView(APIView):
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CheckoutView(APIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class =CheckoutSerializer
+
+    @swagger_auto_schema(responses={200:CheckoutSerializer(many=True)})
+    def get(self, format=None, *args, **kwargs):
+        check_out= Checkout.objects.all()
+        serializer = CheckoutSerializer( check_out  , many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @swagger_auto_schema(request_body=CheckoutSerializer)
+    def post(self, request, format=None, *args, **kwargs):
+        serializers = CheckoutSerializer(data=request.data)
+        if serializers.is_valid():
+            visitor_log = serializers.data.get("visitor_log_id")
+            log = VisitorLog.objects.filter(id=int(visitor_log)).first()
+
+            if log is None:
+                return Response(data="Visitor Does NOT exist", status=status.HTTP_404_NOT_FOUND)
+            elif log and log.check_out is not None:
+                return Response(data="Visitor already checked out", status=status.HTTP_400_BAD_REQUEST)
+            elif log and log.check_out is None:
+                log.check_out = datetime.datetime.now()
+                log.save()
+                return Response(data="Visitor checked  out successfully", status=status.HTTP_200_OK)
+            else:
+                return Response(data="An error occured when checking out the visitor. Please contast the system admin for assistance", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
