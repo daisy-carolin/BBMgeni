@@ -169,7 +169,7 @@
       {% endif %}
 
         
-        {% if user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" or user.role.role_name == "SecurityPersonnel" %}
+        <!-- {% if user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" or user.role.role_name == "SecurityPersonnel" %}
         <li class="nav-item">
           <a class="nav-link " href="{% url 'checker' %}">
             <div
@@ -179,7 +179,7 @@
             <span class="nav-link-text ms-1">check In</span>
           </a>
         </li>
-        {% endif %}
+        {% endif %} -->
 
         {% if user.role.role_name == "LocalAdmin" or user.role.role_name == "OrganisationAdmin" %}
         <li class="nav-item mt-3">

@@ -238,7 +238,6 @@ class OrganisationAdminalForm(forms.ModelForm):
           'expiry_date':forms.TextInput(attrs={'readonly':'readonly'}),
           'organisation_address':forms.TextInput(attrs={'readonly':'readonly'}),
           'maximum_branch':forms.TextInput(attrs={'readonly':'readonly'}),
-        #   'organisational_fields':forms.MultipleChoiceField(choices=ORGANISATINAL_CHOICES),
           }
     
     def __init__(self, *args, **kwargs):
@@ -287,3 +286,9 @@ class OrganisationCheckinForm(forms.ModelForm):
     class Meta:
         model = OrganisationCheckin
         fields = "__all__"
+
+class CheckoutForm(forms.ModelForm):
+    class Meta:
+        model = Checkout
+        fields = "__all__"
+

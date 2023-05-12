@@ -1,11 +1,12 @@
 import email
 from os import name
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
+from api.serializers import VisitorLogSerializer
 
 from api.views import VisitorLogView, VisitortLogView
 from .models import *
 from .forms import *
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import login, logout, authenticate
 from datetime import datetime
 from django.contrib import messages
@@ -90,13 +91,14 @@ def webcheckin_view(request):
                 company_name=request.POST.get("company_name"),
                 id_number=request.POST.get("id_number"),
                 pax=request.POST.get("pax"),
-                checkin_time=request.POST.get("checkin_time"),
-                checkout_time=request.POST.get("checkout_time"),
+                check_in=request.POST.get("check_in"),
+                check_out=request.POST.get("check_out"),
                 vehicle_number=request.POST.get("vehicle_number"),
                 checkin_from="Web Checkin",
-                is_in=True 
+                # is_in=True 
             )
         a.save()
+        print(a)
         return redirect("visitorlog")
     return render(request, "mgeni/webcheckin.html")
 
@@ -356,7 +358,7 @@ def checker(request):
         print(check_record)
 
         
-        return redirect("visitorlog")
+        # return redirect("visitorlog")
 
     context = {"form": form, "check_in": check_record}
     return render(request, "mgeni/checker.html", context)
@@ -631,6 +633,7 @@ def organisation_admin_add(request):
 def visitorlog(request):
     visitors = VisitorLog.objects.all()
     context = {"visitors": visitors}
+    
 
     return render(request, "mgeni/visitorlog.html", context)
 
@@ -650,5 +653,16 @@ def organisation_checkin(request):
     return render(request, "mgeni/organisation_checkin.html", context)
 
 
-
-   
+def check_out(request):
+    if request.method == 'POST':
+        visitor_id = request.POST['visitor_id']
+        visitor = VisitorLog.objects.get(id=visitor_id)
+        visitor.check_out = datetime.now()
+        visitor.save()
+        return redirect('/visitorlog')
+    else:
+        return HttpResponse("Invalid request")
+        
+    # visitor = get_object_or_404(VisitorLog)
+    # visitor.check_out(
+    # bbs
