@@ -351,7 +351,7 @@ class VisitorLog(models.Model):
     host = models.ForeignKey(Roles,on_delete=models.CASCADE, null=True)
     phone_number = models.CharField(max_length=100)
     id_number=models.CharField(max_length=100,blank=True,null=True)
-    company_name=models.CharField(max_length=100)
+    company_name=models.CharField(max_length=100, null=True)
     is_in = models.BooleanField(default=True)
     checkin_from=models.CharField(max_length=100)
     vehicle_number = models.CharField(max_length=100, null=True)
