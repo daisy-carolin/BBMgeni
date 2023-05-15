@@ -5,17 +5,16 @@ The purpose of a Mgeni App is to improve the security and safety of a facility b
 
 # Built With
  `-Python Django`
+ 
  `-HTML/CSS`
+ 
  `-SCSS`
+ 
  `-Javascript`
-
-# Prerequisites
-
 To get this project up and running locally, you must already have python virtual environment plus the necessary requirements.txt  installed on your computer.You also need 
 `python 3.8 version`
 
 # Installation
-
 1.Then install virtualenv:
 
 `sudo pip install virtualenv`
