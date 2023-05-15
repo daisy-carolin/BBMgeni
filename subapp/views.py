@@ -2,8 +2,8 @@ import email
 from os import name
 from django.shortcuts import get_object_or_404, render, redirect
 from api.serializers import VisitorLogSerializer
-
-from api.views import VisitorLogView, VisitortLogView
+import datetime
+from api.views import VisitortLogView
 from .models import *
 from .forms import *
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -355,13 +355,22 @@ def checker(request):
     if search_btn:
         name = request.POST.get("search")
         check_record = Invitation.objects.filter(invite_code=name).first()
-        print(check_record)
 
-        
-        # return redirect("visitorlog")
-
-    context = {"form": form, "check_in": check_record}
-    return render(request, "mgeni/checker.html", context)
+        if check_record is not None:
+            VisitorLog.objects.create(
+                host=request.user.role,
+                visitor_name=check_record.name,
+                phone_number=check_record.phone_number,
+                id_number=check_record.visitor_id,
+                # is_in = True,
+                check_in=datetime.now(),
+                checkin_from="Web Checkin",
+                pax = "1",
+                company_name="",
+            )
+            print("CREATED")
+        return redirect("visitorlog")
+    return redirect("visitorlog",)
 
 
 # validate invite code from here
@@ -484,7 +493,7 @@ def organisation_add(request):
     context = {"organisation": "active", "form": form, "roles": roles, "host": host}
     return render(request, "mgeni/organisation_add.html", context)
 
-# create branches here
+# create a branch here
 def branches(request):
     records = Branches.objects.all()
     context = {"branches_records": "active", "records": records}

@@ -1,4 +1,6 @@
-from django.shortcuts import get_object_or_404, render
+from multiprocessing import context
+from django.shortcuts import get_object_or_404, render,redirect
+from requests import request
 from subapp.forms import VisitorLogForm
 from subapp.models import*
 
@@ -31,7 +33,6 @@ from .serializers import (
     EmployeeRegistrationSerializer,
     RolesSerializer,
     PurposeSerializer,
-    VisitorLogSerializer,
     StaffResidentSerializer,
     OrganisationCheckin,
     DynamicOrganisationSerializer,
@@ -321,19 +322,27 @@ class CheckerView(APIView):
     serializer_class = CheckerSerializer
 
     @swagger_auto_schema(responses={200: CheckerSerializer(many=True)})
-    def get(self, format=None, *args, **kwargs):
+    def  post(self, request, format=None, *args, **kwargs):
         invite_code = kwargs.get('invite_code', None)
         invitation = Invitation.objects.filter(invite_code=invite_code).first()
         if invitation is not None:
-            serializer = InvitationSerializer(invitation)
-            return Response(status=status.HTTP_200_OK, data=serializer.data)
+            VisitorLog.objects.create(
+                host=request.user.role,
+                visitor_name=invitation.name,
+                phone_number=invitation.phone_number,
+                id_number=invitation.visitor_id,
+                check_in=datetime.datetime.now(),
+                checkin_from="Mobile Checkin",
+                pax = "1",
+                company_name="",
+            )
+            return Response(status=status.HTTP_200_OK, data="Successfully checked in")
         else:
             message = {
                 "detail": "INVALID invite code."
             }
             return Response(status=status.HTTP_404_NOT_FOUND, data=message)
-
-
+        
 
 class SecurityRegistrationView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -431,8 +440,9 @@ class VisitorLogView(APIView):
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
-
+        
 class StaffResidentView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = StaffResidentSerializer
@@ -499,7 +509,7 @@ class CheckoutView(APIView):
                 log.save()
                 return Response(data="Visitor checked  out successfully", status=status.HTTP_200_OK)
             else:
-                return Response(data="An error occured when checking out the visitor. Please contast the system admin for assistance", status=status.HTTP_400_BAD_REQUEST)
+                return Response(data="An error occured when checking out the visitor. Please contact the system admin for assistance", status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
