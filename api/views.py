@@ -477,6 +477,16 @@ class OrganisationCheckinView(APIView):
     def post(self, request, format=None, *args, **kwargs):
         serializers = OrganisationCheckinSerializer(data=request.data)
         if serializers.is_valid():
+            VisitorLog.objects.create(
+                host=request.user.role,
+                visitor_name=request.data['first_name'] + request.data['last_name'],
+                id_number=request.data['visitor_id'],
+                check_in=datetime.datetime.now(),
+                checkin_from="Mobile Checkin",
+                pax = request.data['pax'],
+                company_name=request.data['company_name'],
+                vehicle_number=request.data['vehicle_number'],
+            )
             serializers.save()
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
