@@ -1,9 +1,8 @@
 from multiprocessing import context
-from tkinter import Image
-from django.shortcuts import get_object_or_404, render,redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from requests import request
 from subapp.forms import ImageForm, VisitorLogForm
-from subapp.models import*
+from subapp.models import *
 from django.db.models import Q
 
 
@@ -15,7 +14,28 @@ from rest_framework import status
 from rest_framework import permissions
 from rest_framework.response import Response
 
-from .models import User, VisitorLog, SecurityPersonnel, StaffResident, PortalUser, LocalAdmin, Branches,OrganisationalAdmin,Organisation,OrganisationCategory,CompanyCustomer,Invitation,Checker,SecurityRegistration,EmployeeRegistration,Roles,Purpose,Host,OrganisationCheckin,Checkout
+from .models import (
+    User,
+    VisitorLog,
+    SecurityPersonnel,
+    StaffResident,
+    PortalUser,
+    LocalAdmin,
+    Branches,
+    OrganisationalAdmin,
+    Organisation,
+    OrganisationCategory,
+    CompanyCustomer,
+    Invitation,
+    Checker,
+    SecurityRegistration,
+    EmployeeRegistration,
+    Roles,
+    Purpose,
+    Host,
+    OrganisationCheckin,
+    Checkout,
+)
 
 from .serializers import (
     VisitorLogSerializer,
@@ -53,6 +73,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 # from .sms import SendSMS
 
+
 # Create your views here.
 class UsersView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -73,6 +94,7 @@ class UsersView(APIView):
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class HostView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = HostSerializer
@@ -80,7 +102,7 @@ class HostView(APIView):
     @swagger_auto_schema(responses={200: HostSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         host = Host.objects.all()
-        serializer = HostSerializer( host, many=True)
+        serializer = HostSerializer(host, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=HostSerializer)
@@ -100,7 +122,7 @@ class PortalUserView(APIView):
     @swagger_auto_schema(responses={200: PortalUserSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         portal_user = PortalUser.objects.all()
-        serializer = PortalUserSerializer( portal_user, many=True)
+        serializer = PortalUserSerializer(portal_user, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=PortalUserSerializer)
@@ -111,6 +133,7 @@ class PortalUserView(APIView):
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SecurityPersonnelView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -171,6 +194,7 @@ class LocalAdminView(APIView):
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class VisitortLogView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = VisitorLogSerializer
@@ -189,6 +213,7 @@ class VisitortLogView(APIView):
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class BranchesView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -209,6 +234,7 @@ class BranchesView(APIView):
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class OrganisationalAdminView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = OrganisationalAdminSerializer
@@ -216,7 +242,7 @@ class OrganisationalAdminView(APIView):
     @swagger_auto_schema(responses={200: OrganisationalAdminSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         organisation_admin = OrganisationalAdmin.objects.all()
-        serializer = OrganisationalAdminSerializer(organisation_admin , many=True)
+        serializer = OrganisationalAdminSerializer(organisation_admin, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=OrganisationalAdminSerializer)
@@ -227,6 +253,7 @@ class OrganisationalAdminView(APIView):
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class OrganisationView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -240,12 +267,15 @@ class OrganisationView(APIView):
 
     @swagger_auto_schema(request_body=OrganisationSerializer)
     def post(self, request, format=None, *args, **kwargs):
-        serializers = OrganisationSerializer(data=request.data, context={'request': request})
+        serializers = OrganisationSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializers.is_valid():
             serializers.save()
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class OrganisationDetailView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -266,7 +296,7 @@ class OrganisationCategoryView(APIView):
     @swagger_auto_schema(responses={200: OrganisationCategorySerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         organisation_Category = OrganisationCategory.objects.all()
-        serializer = OrganisationCategorySerializer( organisation_Category , many=True)
+        serializer = OrganisationCategorySerializer(organisation_Category, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=OrganisationCategorySerializer)
@@ -278,6 +308,7 @@ class OrganisationCategoryView(APIView):
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class CompanyCustomerView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = CompanyCustomerSerializer
@@ -285,7 +316,7 @@ class CompanyCustomerView(APIView):
     @swagger_auto_schema(responses={200: CompanyCustomerSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         company_customer = CompanyCustomer.objects.all()
-        serializer = CompanyCustomerSerializer( company_customer  , many=True)
+        serializer = CompanyCustomerSerializer(company_customer, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=CompanyCustomerSerializer)
@@ -305,7 +336,7 @@ class InvitationView(APIView):
     @swagger_auto_schema(responses={200: InvitationSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         invitation = Invitation.objects.all()
-        serializer = InvitationSerializer( invitation  , many=True)
+        serializer = InvitationSerializer(invitation, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=InvitationSerializer)
@@ -314,21 +345,21 @@ class InvitationView(APIView):
         if serializers.is_valid():
             serializers.save()
             name = serializers.data.get("name")
-            email=serializers.data.get("email")
-            phone_number=serializers.data.get("phone_number")
-
+            email = serializers.data.get("email")
+            phone_number = serializers.data.get("phone_number")
 
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CheckerView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = CheckerSerializer
 
     @swagger_auto_schema(responses={200: CheckerSerializer(many=True)})
-    def  post(self, request, format=None, *args, **kwargs):
-        invite_code = kwargs.get('invite_code', None)
+    def post(self, request, format=None, *args, **kwargs):
+        invite_code = kwargs.get("invite_code", None)
         invitation = Invitation.objects.filter(invite_code=invite_code).first()
         if invitation is not None:
             VisitorLog.objects.create(
@@ -338,25 +369,23 @@ class CheckerView(APIView):
                 id_number=invitation.visitor_id,
                 check_in=datetime.datetime.now(),
                 checkin_from="Mobile Checkin",
-                pax = "1",
+                pax="1",
                 company_name="",
             )
             return Response(status=status.HTTP_200_OK, data="Successfully checked in")
         else:
-            message = {
-                "detail": "INVALID invite code."
-            }
+            message = {"detail": "INVALID invite code."}
             return Response(status=status.HTTP_404_NOT_FOUND, data=message)
-        
+
 
 class SecurityRegistrationView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = SecurityRegistrationSerializer
 
-    @swagger_auto_schema(responses={200:SecurityRegistrationSerializer(many=True)})
+    @swagger_auto_schema(responses={200: SecurityRegistrationSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         security_registration = SecurityRegistration.objects.all()
-        serializer = SecurityRegistrationSerializer( security_registration  , many=True)
+        serializer = SecurityRegistrationSerializer(security_registration, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=SecurityRegistrationSerializer)
@@ -373,10 +402,10 @@ class EmployeeRegistrationView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = EmployeeRegistrationSerializer
 
-    @swagger_auto_schema(responses={200:EmployeeRegistrationSerializer(many=True)})
+    @swagger_auto_schema(responses={200: EmployeeRegistrationSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         employee_registration = EmployeeRegistration.objects.all()
-        serializer = EmployeeRegistrationSerializer( employee_registration  , many=True)
+        serializer = EmployeeRegistrationSerializer(employee_registration, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=EmployeeRegistrationSerializer)
@@ -388,14 +417,15 @@ class EmployeeRegistrationView(APIView):
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class PurposeView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = PurposeSerializer
 
-    @swagger_auto_schema(responses={200:PurposeSerializer(many=True)})
+    @swagger_auto_schema(responses={200: PurposeSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
         purpose = Purpose.objects.all()
-        serializer = PurposeSerializer( purpose  , many=True)
+        serializer = PurposeSerializer(purpose, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=PurposeSerializer)
@@ -407,14 +437,15 @@ class PurposeView(APIView):
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class RolesView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = RolesSerializer
 
-    @swagger_auto_schema(responses={200:RolesSerializer(many=True)})
+    @swagger_auto_schema(responses={200: RolesSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
-        roles= Roles.objects.all()
-        serializer = RolesSerializer( roles  , many=True)
+        roles = Roles.objects.all()
+        serializer = RolesSerializer(roles, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=RolesSerializer)
@@ -427,45 +458,36 @@ class RolesView(APIView):
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class VisitorLogView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = VisitorLogSerializer
-    parser_classes = [MultiPartParser, FormParser]
 
-    @swagger_auto_schema(responses={200:VisitorLogSerializer(many=True)})
+    @swagger_auto_schema(responses={200: VisitorLogSerializer(many=True)})
     def get(self, request, format=None, *args, **kwargs):
         visitor_log = VisitorLog.objects.all()
         serializer = VisitorLogSerializer(visitor_log, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
-        
+
     @swagger_auto_schema(request_body=VisitorLogSerializer)
     def post(self, request, format=None, *args, **kwargs):
         serializer = VisitorLogSerializer(data=request.data)
-        form = ImageForm(request.POST, request.FILES)
 
-        if serializer.is_valid() and form.is_valid():
-            visitor_log = serializer.save()
-            image_files = request.FILES.getlist('images')
-            for image_file in image_files:
-                image = VisitorLog.objects.create(visitor_log=visitor_log, image=image_file)
-                
+        if serializer.is_valid():
+            serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             errors = serializer.errors
-            errors.update(form.errors)
             return Response(data=errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-        
 class StaffResidentView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = StaffResidentSerializer
 
-    @swagger_auto_schema(responses={200:StaffResidentSerializer(many=True)})
+    @swagger_auto_schema(responses={200: StaffResidentSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
-        staff_resident= StaffResident.objects.all()
-        serializer = StaffResidentSerializer( staff_resident  , many=True)
+        staff_resident = StaffResident.objects.all()
+        serializer = StaffResidentSerializer(staff_resident, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=StaffResidentSerializer)
@@ -480,42 +502,52 @@ class StaffResidentView(APIView):
 
 class OrganisationCheckinView(APIView):
     permission_classes = [permissions.AllowAny]
+    parser_classes = [MultiPartParser, FormParser]
     serializer_class = OrganisationCheckinSerializer
 
-    @swagger_auto_schema(responses={200:OrganisationCheckinSerializer(many=True)})
+    @swagger_auto_schema(responses={200: OrganisationCheckinSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
-        organisation_checkin= OrganisationCheckin.objects.all()
-        serializer = OrganisationCheckinSerializer( organisation_checkin  , many=True)
+        organisation_checkin = OrganisationCheckin.objects.all()
+        serializer = OrganisationCheckinSerializer(organisation_checkin, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=OrganisationCheckinSerializer)
     def post(self, request, format=None, *args, **kwargs):
         serializers = OrganisationCheckinSerializer(data=request.data)
-        if serializers.is_valid():
+        form = ImageForm(request.POST, request.FILES)
+
+        if serializers.is_valid() and form.is_valid():
+            image_files = request.FILES.getlist("images")
+           
             VisitorLog.objects.create(
-                host=request.user.role,
-                visitor_name=request.data['first_name'] + request.data['last_name'],
-                id_number=request.data['visitor_id'],
-                check_in=datetime.datetime.now(),
-                checkin_from="Mobile Checkin",
-                pax = request.data['pax'],
-                company_name=request.data['company_name'],
-                vehicle_number=request.data['vehicle_number'],
-            )
+                    host=request.user.role,
+                    visitor_name=request.data["first_name"]
+                    + " "
+                    + request.data["last_name"],
+                    id_number=request.data["visitor_id"],
+                    check_in=datetime.datetime.now(),
+                    checkin_from="Mobile Checkin",
+                    pax=request.data["pax"],
+                    company_name=request.data["company_name"],
+                    vehicle_number=request.data["vehicle_number"],
+                    visitor_item_image=request.data["visitor_item_image"],
+                )
             serializers.save()
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
+            errors = serializers.errors
+            errors.update(form.errors)
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckoutView(APIView):
     permission_classes = [permissions.AllowAny]
-    serializer_class =CheckoutSerializer
+    serializer_class = CheckoutSerializer
 
-    @swagger_auto_schema(responses={200:CheckoutSerializer(many=True)})
+    @swagger_auto_schema(responses={200: CheckoutSerializer(many=True)})
     def get(self, format=None, *args, **kwargs):
-        check_out= Checkout.objects.all()
-        serializer = CheckoutSerializer( check_out  , many=True)
+        check_out = Checkout.objects.all()
+        serializer = CheckoutSerializer(check_out, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @swagger_auto_schema(request_body=CheckoutSerializer)
@@ -526,33 +558,39 @@ class CheckoutView(APIView):
             log = VisitorLog.objects.filter(id=int(visitor_log)).first()
 
             if log is None:
-                return Response(data="Visitor Does NOT exist", status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    data="Visitor Does NOT exist", status=status.HTTP_404_NOT_FOUND
+                )
             elif log and log.check_out is not None:
-                return Response(data="Visitor already checked out", status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    data="Visitor already checked out",
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             elif log and log.check_out is None:
                 log.check_out = datetime.datetime.now()
                 log.save()
-                return Response(data="Visitor checked  out successfully", status=status.HTTP_200_OK)
+                return Response(
+                    data="Visitor checked  out successfully", status=status.HTTP_200_OK
+                )
             else:
-                return Response(data="An error occured when checking out the visitor. Please contact the system admin for assistance", status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    data="An error occured when checking out the visitor. Please contact the system admin for assistance",
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VisitorLogView1(APIView):
     serializer_class = VisitorLog1Serializer
+
     @swagger_auto_schema(request_body=VisitorLog1Serializer)
     def get_queryset(self):
         queryset = VisitorLog1.objects.all()
-        vehicle_number = self.request.query_params.get('vehicle_number')
-        id_number = self.request.query_params.get('id_number')
+        vehicle_number = self.request.query_params.get("vehicle_number")
+        id_number = self.request.query_params.get("id_number")
         if vehicle_number:
             queryset = queryset.filter(vehicle_number__icontains=vehicle_number)
         if id_number:
             queryset = queryset.filter(id_number=id_number)
         return queryset
-
-   
-
-
-
