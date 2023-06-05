@@ -1,9 +1,10 @@
 import email
+from multiprocessing import context
 from os import name
 from django.shortcuts import get_object_or_404, render, redirect
 from api.serializers import VisitorLogSerializer
 import datetime
-from api.views import VisitortLogView
+# from api.views import VisitortLogView
 from .models import *
 from .forms import *
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -22,6 +23,10 @@ from django.contrib.auth import logout
 
 from django.utils import timezone
 from datetime import timedelta
+from .forms import ImageForm
+
+
+
 
 
 
@@ -84,6 +89,7 @@ def logout_view(request):
 # webcheckin function for checkin from the website
 def webcheckin_view(request):
     if request.method == "POST":
+        form = ImageForm(request.POST, request.FILES)
         a = VisitorLog(
                 visitor_name=request.POST.get("username"),
                 host=request.POST.get("role"),
@@ -94,13 +100,17 @@ def webcheckin_view(request):
                 check_in=request.POST.get("check_in"),
                 check_out=request.POST.get("check_out"),
                 vehicle_number=request.POST.get("vehicle_number"),
+                visitor_item_image=request.POST.get("visitor_item_image"),
                 checkin_from="Web Checkin",
                 # is_in=True 
             )
         a.save()
+        form.save()
         print(a)
         return redirect("visitorlog")
     return render(request, "mgeni/webcheckin.html")
+
+
 
 # create host from here
 @user_passes_test(check_role_is_organisationadmin_and_localadmin)
@@ -362,6 +372,7 @@ def checker(request):
                 visitor_name=check_record.name,
                 phone_number=check_record.phone_number,
                 id_number=check_record.visitor_id,
+                visitor_item_image=check_record.visitor_item_image,
                 # is_in = True,
                 check_in=datetime.now(),
                 checkin_from="Web Checkin",
@@ -642,8 +653,20 @@ def organisation_admin_add(request):
 def visitorlog(request):
     visitors = VisitorLog.objects.all()
     context = {"visitors": visitors}
-    
 
+    return render(request, "mgeni/visitorlog.html", context)
+
+def filter_visitors(request):
+    if request.method == 'POST':
+        search_query = request.POST.get('search_query')
+        visitors = VisitorLog.objects.filter(id=search_query) | VisitorLog.objects.filter(vehicle_number=search_query)
+    else:
+        visitors = VisitorLog.objects.all()
+    
+    context = {
+        'visitors': visitors
+    }
+    
     return render(request, "mgeni/visitorlog.html", context)
 
 

@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
+
 # we are creating forms for our users here
 class CreateUserForm(UserCreationForm):
     email = forms.EmailField()
@@ -292,3 +293,7 @@ class CheckoutForm(forms.ModelForm):
         model = Checkout
         fields = "__all__"
 
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = VisitorLog
+        fields = ['visitor_item_image'] 

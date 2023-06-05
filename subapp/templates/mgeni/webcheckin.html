@@ -54,6 +54,7 @@
                             <input type="number" name="pax" id="PAX" class="form-control" required>
                         </div>
                     </div>
+                    <div>
                     
                     <div class="row">
                         <div class="col-sm-6">
@@ -77,6 +78,16 @@
                                  <input name="checkout_time" id="checkout_time" type="time">
                             </div>
                         </div>
+                        <br>
+                        <div class="col-sm-2">
+                            <label for="">Visitor Item Image</label> 
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <input type="file" name="visitor_item_image">
+                            </form>
+                        </div>
+                        
                             <br>
                             <div>
                                 <button type="submit" class="btn btn-danger" style="float: right;" name="save1"

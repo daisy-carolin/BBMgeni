@@ -200,3 +200,20 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 LOGOUT_REDIRECT_URL='loginn'
 AUTH_USER_MODEL = 'subapp.User'
+
+STATIC_URL = '/static/'
+STATICFILES_DIR=[
+    BASE_DIR/"static",
+]
+
+MEDIA_URL="/images/"
+MEDIA_ROOT=os.path.join(BASE_DIR,'image')
+
+
+STATIC_URL = '/static/'
+
+#Location of static files
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles')
+
+

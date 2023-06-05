@@ -118,6 +118,7 @@
               <th scope="col">Vehicle No.</th>
               <th scope="col">Company Name</th>
               <th scope="col">PAX</th>
+              <th scope="col">Visitor Item Image</th>
               <th scope="col">Checkin From</th>
             </tr>
           </thead>
@@ -133,7 +134,15 @@
               <td>{{data.vehicle_number}}</td>
               <td>{{data.company_name}}</td>
               <td>{{data.PAX}}</td>
+              <td> 
+                {% if  data.visitor_item_image %}
+                <img src={{data.visitor_item_image.url}} alt="Visitor Item Image" height="80px", width="80px">
+                {% else %}
+                <p>No image found</p>
+                {% endif %}
+              </td>
               <td>{{data.checkin_from}}</td>
+             
               <td style="width: 12%">
                 <div class="row">
                   <div class="col-md-12">
@@ -147,10 +156,11 @@
                   </div>
                   {% endif %}
                 </div>
-              </td>
-              <td>{{data.created_at|date}}</td>
+                 <td>{{data.created_at|date}}</td>
               <td>
-                <form method="post" action="{% url 'check_out' %}">
+                
+                
+        <form method="post" action="{% url 'check_out' %}">
                   {% csrf_token %}
                   <input type="hidden" name="visitor_id" value="{{ data.id }}"/>
                   <button
