@@ -24,6 +24,8 @@ urlpatterns = [
     path('local_admin', views.LocalAdminView.as_view(),name='local_admin_api'),
     path('organisation_checkin', views.OrganisationCheckinView.as_view(),name='organisation_checkin_api'),
     path('checkout', views.CheckoutView.as_view(), name='checkout_api'),
+    path('check_id_vehicle_number', views.VisitorLogView1.as_view(), name='check_id_vehicle_number'),
+
 
 
 

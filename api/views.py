@@ -1,8 +1,11 @@
 from multiprocessing import context
+from tkinter import Image
 from django.shortcuts import get_object_or_404, render,redirect
 from requests import request
-from subapp.forms import VisitorLogForm
+from subapp.forms import ImageForm, VisitorLogForm
 from subapp.models import*
+from django.db.models import Q
+
 
 # Create your views here.
 
@@ -45,6 +48,8 @@ from drf_yasg.utils import swagger_auto_schema
 from .serializers import *
 
 from django.contrib.auth.hashers import make_password
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 # from .sms import SendSMS
 
@@ -422,25 +427,35 @@ class RolesView(APIView):
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class VisitorLogView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = VisitorLogSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
     @swagger_auto_schema(responses={200:VisitorLogSerializer(many=True)})
-    def get(self, format=None, *args, **kwargs):
-        visitor_log= VisitorLog.objects.all()
-        serializer = VisitorLogSerializer( visitor_log  , many=True)
+    def get(self, request, format=None, *args, **kwargs):
+        visitor_log = VisitorLog.objects.all()
+        serializer = VisitorLogSerializer(visitor_log, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
-
+        
     @swagger_auto_schema(request_body=VisitorLogSerializer)
     def post(self, request, format=None, *args, **kwargs):
-        serializers = VisitorLogSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(data=serializers.data, status=status.HTTP_201_CREATED)
+        serializer = VisitorLogSerializer(data=request.data)
+        form = ImageForm(request.POST, request.FILES)
+
+        if serializer.is_valid() and form.is_valid():
+            visitor_log = serializer.save()
+            image_files = request.FILES.getlist('images')
+            for image_file in image_files:
+                image = VisitorLog.objects.create(visitor_log=visitor_log, image=image_file)
+                
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+            errors = serializer.errors
+            errors.update(form.errors)
+            return Response(data=errors, status=status.HTTP_400_BAD_REQUEST)
+
 
         
 class StaffResidentView(APIView):
@@ -522,6 +537,22 @@ class CheckoutView(APIView):
                 return Response(data="An error occured when checking out the visitor. Please contact the system admin for assistance", status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VisitorLogView1(APIView):
+    serializer_class = VisitorLog1Serializer
+    @swagger_auto_schema(request_body=VisitorLog1Serializer)
+    def get_queryset(self):
+        queryset = VisitorLog1.objects.all()
+        vehicle_number = self.request.query_params.get('vehicle_number')
+        id_number = self.request.query_params.get('id_number')
+        if vehicle_number:
+            queryset = queryset.filter(vehicle_number__icontains=vehicle_number)
+        if id_number:
+            queryset = queryset.filter(id_number=id_number)
+        return queryset
+
+   
 
 
 

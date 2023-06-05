@@ -358,6 +358,8 @@ class VisitorLog(models.Model):
     pax = models.CharField(max_length=100, null=True)
     check_in = models.DateTimeField(auto_now_add=True)
     check_out = models.DateTimeField(blank=True,null=True)
+    visitor_item_image = models.ImageField(upload_to='images',blank=True,null=True)
+
 
     def is_in(self):
         return self.check_out is None
@@ -410,3 +412,6 @@ class Checkout(models.Model):
     def __str__(self):
         return self.visitor_id
 
+class VisitorLog1(models.Model):
+    id_number=models.CharField(max_length=100,blank=True,null=True)
+    vehicle_number = models.CharField(max_length=100, null=True)

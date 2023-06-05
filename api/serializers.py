@@ -142,3 +142,9 @@ class OrganisationCheckinSerializer(serializers.ModelSerializer):
 
 class CheckoutSerializer(serializers.Serializer):
     visitor_log_id = serializers.IntegerField(required=True)
+
+
+class VisitorLog1Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = VisitorLog
+        fields = ("id_number", "vehicle_number", )
