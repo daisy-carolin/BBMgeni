@@ -4,6 +4,7 @@ from requests import request
 from subapp.forms import ImageForm, VisitorLogForm
 from subapp.models import *
 from django.db.models import Q
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 # Create your views here.
@@ -518,8 +519,11 @@ class OrganisationCheckinView(APIView):
 
         if serializers.is_valid() and form.is_valid():
             image_files = request.FILES.getlist("images")
-           
-            VisitorLog.objects.create(
+
+            # print(request.data["visitor_item_image"])
+
+            try:
+                VisitorLog.objects.create(
                     host=request.user.role,
                     visitor_name=request.data["first_name"]
                     + " "
@@ -528,10 +532,28 @@ class OrganisationCheckinView(APIView):
                     check_in=datetime.datetime.now(),
                     checkin_from="Mobile Checkin",
                     pax=request.data["pax"],
+                    phone_number=request.data["phone_number"],
+                    email=request.data["email"],
                     company_name=request.data["company_name"],
                     vehicle_number=request.data["vehicle_number"],
                     visitor_item_image=request.data["visitor_item_image"],
                 )
+            except MultiValueDictKeyError:
+                VisitorLog.objects.create(
+                    host=request.user.role,
+                    visitor_name=request.data["first_name"]
+                    + " "
+                    + request.data["last_name"],
+                    id_number=request.data["visitor_id"],
+                    check_in=datetime.datetime.now(),
+                    checkin_from="Mobile Checkin",
+                    pax=request.data["pax"],
+                    phone_number=request.data["phone_number"],
+                    email=request.data["email"],
+                    company_name=request.data["company_name"],
+                    vehicle_number=request.data["vehicle_number"],
+                )
+
             serializers.save()
             return Response(data=serializers.data, status=status.HTTP_201_CREATED)
         else:
